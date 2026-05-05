@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'app_colors.dart';
+
+class AppTextStyles {
+  AppTextStyles._();
+
+  static final TextStyle displayLg = GoogleFonts.manrope(
+    fontSize: 36,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle displayLgBold = GoogleFonts.manrope(
+    fontSize: 36,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle displayLgInter = GoogleFonts.inter(
+    fontSize: 36,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle titleLg = GoogleFonts.manrope(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle titleMd = GoogleFonts.manrope(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle titleSm = GoogleFonts.manrope(
+    fontSize: 16,
+    fontWeight: FontWeight.w100,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle bodyLg = GoogleFonts.manrope(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+  );
+
+  static final TextStyle bodyMd = GoogleFonts.manrope(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondary,
+  );
+
+  static final TextStyle bodySm = GoogleFonts.manrope(
+    fontSize: 13,
+    fontWeight: FontWeight.w300,
+    color: AppColors.textSecondary,
+  );
+
+  static final TextStyle labelMd = GoogleFonts.manrope(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textSecondary,
+  );
+
+  static final TextStyle labelSm = GoogleFonts.manrope(
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textSecondary,
+  );
+
+  static final TextStyle button = GoogleFonts.manrope(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextTheme textTheme = TextTheme(
+    displayLarge: displayLgInter,
+    titleLarge: titleLg,
+    titleMedium: titleMd,
+    titleSmall: titleSm,
+    bodyLarge: bodyLg,
+    bodyMedium: bodyMd,
+    bodySmall: bodySm,
+    labelLarge: button,
+    labelMedium: labelMd,
+    labelSmall: labelSm,
+  );
+}

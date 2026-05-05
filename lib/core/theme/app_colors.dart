@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+
+class AppColors {
+  AppColors._();
+
+  // Core background
+  static const Color pillToggleSelected = Color(0xFF001A41);
+  static const Color pillToggleInactive = Color(0xFFC1C6D7);
+  static const Color background = Color(0xFF0B1229);
+  static const Color backgroundAlt = Color(0xFF131B2E);
+  static const Color surface = Color(0xFF060E20);
+  static const Color surfaceDeep = Color(0xFF060E20);
+
+  // Login Button
+  static const auth = LinearGradient(
+    colors: [Color(0xFFADC6FF), Color(0xFF4B8EFF)],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
+  // Brand
+  static const Color primaryBlue = Color(0xFF4B8EFF);
+  static const Color primaryTint = Color(0xFFADC6FF);
+
+  // Text
+  static const Color textPrimary = Color(0xFFDAE2FD);
+  static const Color textSecondary = Color(0xFFC1C6D7);
+  static const Color textMuted = Color(0xFF8B90A0);
+
+  // Input Labels
+  static const Color labelTextPrimary = Color(0xFFADC6FF);
+
+  // Surfaces and borders
+  static const Color surfaceBorder = Color(0xFF414755);
+  static const Color inputFill = Color(0xFF060E20);
+
+  // Status
+  static const Color success = Color(0xFF81C784);
+  static const Color successBright = Color(0xFF4AE176);
+  static const Color warning = Color(0xFFFACC15);
+  static const Color error = Color(0xFFFFB4AB);
+
+  // Legacy values kept for compatibility
+  static const Color backgroundTop = background;
+  static const Color backgroundBottom = Color(0xFF0E1A34);
+  static const Color glass = Color(0x1AFFFFFF);
+  static const Color glassBorder = Color(0x33FFFFFF);
+  static const Color glassDark = Color(0x14000000);
+  static const Color surfaceDark = surfaceDeep;
+}
