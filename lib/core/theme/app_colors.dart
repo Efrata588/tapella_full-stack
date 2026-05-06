@@ -11,6 +11,11 @@ class AppColors {
   static const Color surface = Color(0xFF060E20);
   static const Color surfaceDeep = Color(0xFF060E20);
 
+  // Navbar fill
+  static const Color navSurface = Color(0xFF0F172A);
+  static const Color navBorder = Color(0xFF60A5FA);
+  static const Color navShadow = Color(0xFFADC6FF);
+
   // Login Button
   static const auth = LinearGradient(
     colors: [Color(0xFFADC6FF), Color(0xFF4B8EFF)],
@@ -21,6 +26,9 @@ class AppColors {
   // Brand
   static const Color primaryBlue = Color(0xFF4B8EFF);
   static const Color primaryTint = Color(0xFFADC6FF);
+
+  // App Bar
+  static const Color appBarText = Color(0xFFFFFFFF);
 
   // Text
   static const Color textPrimary = Color(0xFFDAE2FD);
