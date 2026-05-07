@@ -14,7 +14,7 @@ class AppTextStyles {
   static final TextStyle appBarTitle = GoogleFonts.inter(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
+    color: AppColors.appBarText,
   );
 
   static final TextStyle displayLgBold = GoogleFonts.manrope(

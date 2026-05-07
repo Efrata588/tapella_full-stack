@@ -29,6 +29,14 @@ class AppColors {
 
   // App Bar
   static const Color appBarText = Color(0xFFFFFFFF);
+  static final LinearGradient grad = LinearGradient(
+    colors: [
+      Colors.white.withValues(alpha: 0),
+      Colors.white.withValues(alpha: 0.1),
+      Colors.white.withValues(alpha: 0),
+    ],
+    stops: [0.0, 0.5, 1.0],
+  );
 
   // Text
   static const Color textPrimary = Color(0xFFDAE2FD);

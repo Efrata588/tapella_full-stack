@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
@@ -16,7 +17,18 @@ class _PlaceHolderScreenState extends State<PlaceHolderScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomTopAppBar(),
+      appBar: CustomAppBar(
+        leading: const Icon(Icons.menu),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+            child: IconButton(
+              onPressed: () => context.go("/client/login"),
+              icon: Icon(Icons.account_circle, color: Colors.white, size: 30),
+            ),
+          ),
+        ],
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       body: Column(
         children: [
