@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tapella/core/theme/app_colors.dart';
 
 class GlassCard extends StatelessWidget {
   final Widget child;
@@ -17,20 +16,9 @@ class GlassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        /// 🔵 Glow layer (THE SECRET)
         Positioned.fill(
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              gradient: RadialGradient(
-                center: Alignment.topLeft,
-                radius: 1.2,
-                colors: [
-                  AppColors.primaryBlue.withValues(alpha: 0.25),
-                  Colors.transparent,
-                ],
-              ),
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(28)),
           ),
         ),
 

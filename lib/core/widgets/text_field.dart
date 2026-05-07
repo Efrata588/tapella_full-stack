@@ -57,7 +57,7 @@ class AppTextField extends StatelessWidget {
           style: AppTextStyles.bodyLg.copyWith(color: AppColors.textPrimary),
           decoration: InputDecoration(
             isDense: false,
-            contentPadding: const EdgeInsets.fromLTRB(48, 18, 18, 16),
+            contentPadding: const EdgeInsets.fromLTRB(48, 0, 18, 0),
 
             hintText: hintText,
             hintStyle: AppTextStyles.bodyMd.copyWith(
