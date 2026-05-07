@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tapella/core/theme/app_colors.dart';
+// import 'package:tapella/core/theme/app_colors.dart';
 import 'package:tapella/core/theme/app_text_styles.dart';
 import 'package:tapella/core/widgets/app_bar.dart';
+import 'package:tapella/core/widgets/glass_card.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_scaffold.dart';
 
@@ -27,7 +28,7 @@ class ServiceDetail extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+        padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -35,10 +36,32 @@ class ServiceDetail extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                      'https://via.placeholder.com/150',
+                  // to give the icon a border since the iconbutton doesnt take border
+                  Center(
+                    child: Container(
+                      width: 200, // Adjust overall size as needed
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        // This adds the dark border ring seen around the white circle
+                        border: Border.all(
+                          color: const Color(
+                            0xFF28334A,
+                          ), // Adjust to match your background's exact hex
+                          width: 4.0,
+                        ),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons
+                              .person, // 'person' matches the solid shape in your image better
+                          color: Color(
+                            0xFF4A4A4A,
+                          ), // The dark grey color of the figure
+                          size: 100,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
@@ -84,14 +107,19 @@ class ServiceDetail extends StatelessWidget {
             _buildReviewCard(
               'Elroi T',
               'Reliable housekeeping provider offering cleaning, laundry, and home organization services. Focused on keeping your space neat, fresh, and comfortable.',
+              5,
             ),
+            const SizedBox(height: 8),
             _buildReviewCard(
               'Efrata E',
               'Reliable housekeeping provider offering cleaning, laundry, and home organization services. Focused on keeping your space neat, fresh, and comfortable.',
+              3,
             ),
+            const SizedBox(height: 8),
             _buildReviewCard(
               'Naomi Mesfin',
               'Reliable housekeeping provider offering cleaning, laundry, and home organization services. Focused on keeping your space neat, fresh, and comfortable.',
+              5,
             ),
 
             const SizedBox(height: 32),
@@ -163,20 +191,16 @@ class ServiceDetail extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewCard(String name, String review) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.glass,
-        borderRadius: BorderRadius.circular(20),
-      ),
+  Widget _buildReviewCard(String name, String review, int stars) {
+    return GlassCard(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const CircleAvatar(radius: 18, backgroundColor: Colors.grey),
+              // const CircleAvatar(radius: 18, backgroundColor: Colors.grey),
+              Icon(Icons.account_circle, color: Colors.white, size: 40),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,9 +212,10 @@ class ServiceDetail extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text(
-                    '★★★★★',
-                    style: TextStyle(color: Colors.amber, fontSize: 12),
+                  Row(
+                    children: List.generate(stars, (index) {
+                      return Icon(Icons.star, color: Colors.amber, size: 12);
+                    }),
                   ),
                 ],
               ),
