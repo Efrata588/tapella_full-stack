@@ -18,6 +18,8 @@ class _PlaceHolderScreenState extends State<PlaceHolderScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: CustomAppBar(
+        onMenuPressed: () => context.go("/service/detail/alt-1"),
+
         leading: const Icon(Icons.menu),
         actions: [
           Padding(

@@ -83,6 +83,23 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  static final TextStyle providerName = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  );
+  static final TextStyle providerLevel = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    color: AppColors.textPrimary,
+  );
+
+  static final TextStyle aboutDetail = GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.w100,
+    color: AppColors.textPrimary,
+    height: 26 / 16,
+  );
   static final TextTheme textTheme = TextTheme(
     displayLarge: displayLgInter,
     titleLarge: titleLg,

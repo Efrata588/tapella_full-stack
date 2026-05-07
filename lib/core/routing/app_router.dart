@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tapella/features/services/presentation/screens/service_details.dart';
 
 import '../../features/screens.dart';
 
@@ -71,7 +72,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/service/detail/alt-1',
-        builder: (context, state) => const PlaceHolderScreen(),
+        builder: (context, state) => const ServiceDetail(),
       ),
       GoRoute(
         path: '/service/detail/alt-2',
