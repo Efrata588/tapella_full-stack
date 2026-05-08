@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:tapella/core/theme/app_colors.dart';
+import 'package:tapella/core/theme/app_colors.dart';
 import 'package:tapella/core/theme/app_text_styles.dart';
 import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/glass_card.dart';
@@ -39,26 +39,21 @@ class ServiceDetail extends StatelessWidget {
                   // to give the icon a border since the iconbutton doesnt take border
                   Center(
                     child: Container(
-                      width: 200, // Adjust overall size as needed
-                      height: 200,
+                      width: 150, // Adjust overall size as needed
+                      height: 150,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                         // This adds the dark border ring seen around the white circle
                         border: Border.all(
-                          color: const Color(
-                            0xFF28334A,
-                          ), // Adjust to match your background's exact hex
+                          color: AppColors.iconBorder,
                           width: 4.0,
                         ),
                       ),
                       child: const Center(
                         child: Icon(
-                          Icons
-                              .person, // 'person' matches the solid shape in your image better
-                          color: Color(
-                            0xFF4A4A4A,
-                          ), // The dark grey color of the figure
+                          Icons.person,
+                          color: AppColors.profileIcon,
                           size: 100,
                         ),
                       ),
@@ -88,7 +83,7 @@ class ServiceDetail extends StatelessWidget {
                 const Text(
                   'Customer Reviews',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textWhite,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -97,7 +92,7 @@ class ServiceDetail extends StatelessWidget {
                   onPressed: () {},
                   child: const Text(
                     'View all',
-                    style: TextStyle(color: Colors.white60),
+                    style: TextStyle(color: AppColors.textSecondary),
                   ),
                 ),
               ],
@@ -127,7 +122,7 @@ class ServiceDetail extends StatelessWidget {
             const Text(
               'Date',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textWhite,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
