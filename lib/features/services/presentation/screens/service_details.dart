@@ -68,7 +68,7 @@ class ServiceDetail extends StatelessWidget {
             const SizedBox(height: AppSpacing.xxl),
 
             // About Section
-            Text('About the service', style: AppTextStyles.titleLg),
+            Text('About the service', style: AppTextStyles.servicesTitle),
             const SizedBox(height: 8),
             Text(
               'Reliable housekeeping provider offering cleaning, laundry, and home organization services. Focused on keeping your space neat, fresh, and comfortable.',
@@ -80,19 +80,15 @@ class ServiceDetail extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Customer Reviews',
-                  style: TextStyle(
-                    color: AppColors.textWhite,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text('Customer Reviews', style: AppTextStyles.servicesM),
                 TextButton(
                   onPressed: () {},
                   child: const Text(
                     'View all',
-                    style: TextStyle(color: AppColors.textSecondary),
+                    style: TextStyle(
+                      color: AppColors.labelTextPrimary,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],

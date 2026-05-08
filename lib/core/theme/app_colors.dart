@@ -42,9 +42,10 @@ class AppColors {
   static const Color profileIcon = Color(0xFF4A4A4A);
   static const Color iconBorder = Color(0xFF28334A);
   static const Color serviceDetailSurfaceDeep = Color(0xFF060E20);
+  static const Color servicesTitle = Color(0xFFDCE1FF);
 
   // Text
-  static const Color textWhite = Color(0xFFffffff);
+  static const Color textWhite = Color(0xFFFFFFFF);
   static const Color textPrimary = Color(0xFFDAE2FD);
   static const Color textSecondary = Color(0xFFC1C6D7);
   static const Color textMuted = Color(0xFF8B90A0);

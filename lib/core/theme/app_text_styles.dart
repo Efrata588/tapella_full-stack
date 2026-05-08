@@ -35,6 +35,12 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
+  static final TextStyle servicesTitle = GoogleFonts.inter(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    color: AppColors.servicesTitle,
+  );
+
   static final TextStyle titleMd = GoogleFonts.manrope(
     fontSize: 20,
     fontWeight: FontWeight.w600,
@@ -84,21 +90,27 @@ class AppTextStyles {
   );
 
   static final TextStyle providerName = GoogleFonts.inter(
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: FontWeight.bold,
-    color: Colors.white,
+    color: AppColors.textWhite,
   );
   static final TextStyle providerLevel = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.normal,
-    color: AppColors.textPrimary,
+    color: AppColors.textSecondary,
   );
 
   static final TextStyle aboutDetail = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.w100,
-    color: AppColors.textPrimary,
+    color: AppColors.textSecondary,
     height: 26 / 16,
+  );
+
+  static final TextStyle servicesM = TextStyle(
+    color: AppColors.servicesTitle,
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
   );
   static final TextTheme textTheme = TextTheme(
     displayLarge: displayLgInter,
