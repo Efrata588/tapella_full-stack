@@ -15,11 +15,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-        left: 24,
-        right: 24,
-        bottom: 24 + MediaQuery.of(context).padding.bottom,
-      ),
+      margin: EdgeInsets.only(bottom: 5),
       height: 67,
       decoration: BoxDecoration(
         color: AppColors.navSurface.withValues(alpha: 0.8),

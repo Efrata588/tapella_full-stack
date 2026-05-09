@@ -23,6 +23,10 @@ class AppColors {
     end: Alignment.centerRight,
   );
 
+  // Call Button
+  static const Color callActive = Color(0xFF4AE176);
+  static const Color callIcon = Color(0xFF00FF48);
+
   // Brand
   static const Color primaryBlue = Color(0xFF4B8EFF);
   static const Color primaryTint = Color(0xFFADC6FF);
@@ -52,6 +56,7 @@ class AppColors {
 
   // Input Labels
   static const Color labelTextPrimary = Color(0xFFADC6FF);
+  static const Color reviewName = Color(0xFFD8E2FF);
 
   // Surfaces and borders
   static const Color surfaceBorder = Color(0xFF414755);

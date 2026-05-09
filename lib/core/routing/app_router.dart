@@ -74,6 +74,10 @@ class AppRouter {
         builder: (context, state) => const ServiceDetail(),
       ),
       GoRoute(
+        path: '/service/book/alt-1',
+        builder: (context, state) => const PlaceHolderScreen(),
+      ),
+      GoRoute(
         path: '/service/detail/alt-2',
         builder: (context, state) => const PlaceHolderScreen(),
       ),
