@@ -4,3 +4,4 @@ export 'auth/presentation/screens/client_login.dart';
 export 'auth/presentation/screens/client_signup.dart';
 export 'auth/presentation/screens/place_holder.dart';
 export 'services/presentation/screens/service_details.dart';
+export 'business/presentation/screens/business_home.dart';
