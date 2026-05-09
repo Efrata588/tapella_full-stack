@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tapella/features/cllients/presentation/screens/client_requestpage.dart';
 
 import '../../features/screens.dart';
 
@@ -27,7 +28,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/client/requests',
-        builder: (context, state) => const PlaceHolderScreen(),
+        builder: (context, state) => const ClientRequestpage(),
       ),
       GoRoute(
         path: '/client/requests/service',

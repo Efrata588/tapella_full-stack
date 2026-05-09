@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
+  final EdgeInsets? margin;
 
   const GlassCard({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(20),
+    this.margin,
   });
 
   @override
@@ -29,6 +31,7 @@ class GlassCard extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
             child: Container(
               padding: padding,
+              margin: margin,
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(28),
