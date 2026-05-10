@@ -11,6 +11,16 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimary,
   );
+  static final TextStyle profileHeader = GoogleFonts.inter(
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+    color: AppColors.servicesTitle,
+  );
+  static final TextStyle profileSubHeader = GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+    color: AppColors.navBorder,
+  );
   static final TextStyle appBarTitle = GoogleFonts.inter(
     fontSize: 24,
     fontWeight: FontWeight.bold,

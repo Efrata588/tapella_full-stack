@@ -70,8 +70,8 @@ class AppRouter {
         builder: (context, state) => const PlaceHolderScreen(),
       ),
       GoRoute(
-        path: '/service/detail',
-        builder: (context, state) => const PlaceHolderScreen(),
+        path: '/business/profile',
+        builder: (context, state) => const BusinessProfile(),
       ),
       GoRoute(
         path: '/service/detail/alt-1',
