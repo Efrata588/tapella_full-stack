@@ -4,7 +4,6 @@ import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:tapella/core/widgets/glass_card.dart';
-import '../../../../core/theme/app_colors.dart';
 
 class ClientHomePage extends StatefulWidget {
   const ClientHomePage({super.key});
@@ -16,7 +15,6 @@ class ClientHomePage extends StatefulWidget {
 class _ClientHomePageState extends State<ClientHomePage> {
   TextEditingController searchController = TextEditingController();
   int index = 0;
-  // Mock data for workers
   final List<Map<String, dynamic>> workers = [
     {
       "name": "Naomi M",
@@ -35,7 +33,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
       "isSaved": true,
     },
   ];
-  // Mock data for toprated
   final List<Map<String, dynamic>> topRated = [
     {"name": "Saron K", "loc": "Bole", "role": "Master Plumber", "rate": 4.9},
     {"name": "Abel T", "loc": "Kazanchis", "role": "Electrician", "rate": 4.8},
@@ -59,12 +56,10 @@ class _ClientHomePageState extends State<ClientHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            // Search Bar
             TextField(
               controller: searchController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                // Keeps the vertical alignment clean
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 15,
@@ -72,7 +67,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
                 hintText: "Hinted search text",
                 hintStyle: const TextStyle(color: Colors.grey),
 
-                // Using a simple Icon removes the need for extra Padding/IconButton wrappers
                 suffixIcon: const Icon(
                   Icons.search,
                   color: Color.fromARGB(255, 201, 200, 200),
@@ -87,7 +81,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
               ),
             ),
             SizedBox(height: 20),
-            // Category Chips
             Row(
               children: [
                 _buildCategoryChip("ALL SERVICES", isSelected: true),
