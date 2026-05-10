@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:tapella/features/cllients/presentation/screens/client_profile.dart';
+import 'package:tapella/features/cllients/presentation/screens/client_profile_edit.dart';
 import 'package:tapella/features/cllients/presentation/screens/client_requestpage.dart';
 import 'package:tapella/features/cllients/presentation/screens/client_homepage.dart';
 
@@ -37,11 +39,11 @@ class AppRouter {
       ),
       GoRoute(
         path: '/client/profile',
-        builder: (context, state) => const PlaceHolderScreen(),
+        builder: (context, state) => const ClientProfile(),
       ),
       GoRoute(
         path: '/client/profile/edit',
-        builder: (context, state) => const PlaceHolderScreen(),
+        builder: (context, state) => const ClientProfileEdit(),
       ),
       GoRoute(
         path: '/business/login',
@@ -80,8 +82,8 @@ class AppRouter {
         builder: (context, state) => const PlaceHolderScreen(),
       ),
       GoRoute(
-        path: '/consumer/settings',
-        builder: (context, state) => const PlaceHolderScreen(),
+        path: '/business/profile-edit',
+        builder: (context, state) => const ProviderEditScreen(),
       ),
     ],
   );

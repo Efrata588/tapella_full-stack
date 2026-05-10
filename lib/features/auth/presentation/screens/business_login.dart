@@ -82,7 +82,7 @@ class BusinessLoginScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   SecondaryButton(
                     label: 'Sign Up',
-                    onPressed: () => context.go('/business/signup'),
+                    onPressed: () => context.go('/business/profile-edit'),
                   ),
                   const SizedBox(height: 16),
                   Align(

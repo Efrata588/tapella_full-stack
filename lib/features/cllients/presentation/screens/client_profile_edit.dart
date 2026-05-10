@@ -10,8 +10,8 @@ import 'package:tapella/core/widgets/primary_button.dart';
 import 'package:tapella/core/widgets/red_button.dart';
 import 'package:tapella/core/widgets/text_field.dart';
 
-class ProviderEditScreen extends StatelessWidget {
-  const ProviderEditScreen({super.key});
+class ClientProfileEdit extends StatelessWidget {
+  const ClientProfileEdit({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +94,9 @@ class ProviderEditScreen extends StatelessWidget {
 
             const SizedBox(height: AppSpacing.lg),
 
-            Text('Elroi', style: AppTextStyles.profileName),
+            Text('Bekelle Mola', style: AppTextStyles.profileName),
             const SizedBox(height: 4),
-            Text('PREMIUM PROVIDER', style: AppTextStyles.profileType),
+            Text('PREMIUM MEMBER', style: AppTextStyles.profileType),
 
             const SizedBox(height: AppSpacing.xl),
 
@@ -127,20 +127,9 @@ class ProviderEditScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: AppSpacing.lg),
-            RedButton(label: "Deactivate Account", height: 56, width: 277),
-            const SizedBox(height: AppSpacing.sm),
-            Center(
-              child: Padding(
-                padding: EdgeInsetsGeometry.fromLTRB(128, 0, 128, 0),
-                child: Text(
-                  "Deactivating your account will hide your services from the marketplace. This action can be undone later.",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColors.pillToggleInactive.withValues(alpha: 0.6),
-                  ),
-                ),
-              ),
-            ),
+
+            RedButton(label: "Delete Account", height: 56, width: 277),
+
             const SizedBox(height: 100),
           ],
         ),
