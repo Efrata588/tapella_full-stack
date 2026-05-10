@@ -27,7 +27,7 @@ class _BusinessHomeState extends State<BusinessHome> {
       extendBody: true,
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
+        onTap: (index) => _onItemTapped(index),
       ),
       appBar: CustomAppBar(
         onMenuPressed: () => context.go("/business/login"),
@@ -120,5 +120,19 @@ class _BusinessHomeState extends State<BusinessHome> {
         ),
       ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        context.go('/business/home');
+        break;
+      case 1:
+        context.go('/business/requests');
+        break;
+      case 2:
+        context.go('/business/profile');
+        break;
+    }
   }
 }

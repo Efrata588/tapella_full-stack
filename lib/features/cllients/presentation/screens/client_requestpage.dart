@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
+import 'package:tapella/core/widgets/tab_selector.dart';
 import '../../../../core/widgets/client_request_card.dart';
 import '../../../../core/widgets/bottom_navbar.dart';
 
@@ -95,14 +96,9 @@ class _ClientRequestpageState extends State<ClientRequestpage> {
                 ),
               ),
               SizedBox(height: 16),
-
-              Row(
-                children: [
-                  _buildTab('All'),
-                  _buildTab('Accepted'),
-                  _buildTab('Pending'),
-                  _buildTab('Rejected'),
-                ],
+              TabSelector(
+                selectedTab: selectedTab,
+                onTabChanged: (tab) => setState(() => selectedTab = tab),
               ),
               SizedBox(height: 16),
 
@@ -142,55 +138,5 @@ class _ClientRequestpageState extends State<ClientRequestpage> {
         context.go('/client/profile');
         break;
     }
-  }
-
-  Widget _buildTab(String title) {
-    final bool active = selectedTab == title;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedTab = title;
-        });
-      },
-
-      child: Padding(
-        padding: const EdgeInsets.only(right: 18),
-
-        child: SizedBox(
-          width: 65,
-
-          child: Column(
-            children: [
-              Text(
-                title,
-
-                style: TextStyle(
-                  color: active
-                      ? const Color(0xFF60A5FA)
-                      : const Color(0xFF94A3B8),
-
-                  fontWeight: active ? FontWeight.bold : FontWeight.normal,
-
-                  fontSize: 16,
-                  fontFamily: 'Inter',
-                  height: 1.5,
-                  letterSpacing: -0.4,
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              if (active)
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  color: const Color(0xFF60A5FA),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -63,7 +63,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/business/requests',
-        builder: (context, state) => const PlaceHolderScreen(),
+        builder: (context, state) => const BusinessRequests(),
       ),
       GoRoute(
         path: '/business/new-listing',
