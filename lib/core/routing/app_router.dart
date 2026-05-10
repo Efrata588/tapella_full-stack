@@ -67,7 +67,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/business/new-listing',
-        builder: (context, state) => const PlaceHolderScreen(),
+        builder: (context, state) => const CreateServiceBody(),
       ),
       GoRoute(
         path: '/business/profile',

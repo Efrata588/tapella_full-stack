@@ -11,6 +11,7 @@ import 'package:tapella/core/widgets/primary_button.dart';
 import 'package:tapella/core/widgets/provider_card.dart';
 import 'package:tapella/core/widgets/red_button.dart';
 import 'package:tapella/core/widgets/stat_card.dart';
+import 'package:tapella/core/widgets/profile_card.dart';
 
 class BusinessProfile extends StatelessWidget {
   const BusinessProfile({super.key});
@@ -69,15 +70,34 @@ class BusinessProfile extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 4),
+            const SizedBox(height: 24),
             Text("My Services", style: AppTextStyles.profileHeader),
-            const SizedBox(height: 4),
+            const SizedBox(height: 16),
 
+            ProfileCard(
+              name: "Saron Kiflu",
+              location: "Megenagna",
+              profession: "Plumbing • Expert",
+              rating: 4.8,
+              description: "Master of pipes, pressure, and precision",
+              icon: Icons.account_circle,
+              onEdit: () {},
+              onDelete: () {},
+            ),
+            const SizedBox(height: 16),
+            PrimaryButton(
+              label: "New Listing",
+              height: 56,
+              width: 277,
+              fill: AppColors.primaryBlue,
+              onPressed: () => context.go("/business/new-listing"),
+            ),
+            const SizedBox(height: 16),
             _ProfileMenuCard(
               icon: Icons.person_outline,
               title: 'Personal Information',
               subtitle: 'Name, email, and bio',
-              onTap: () => context.go('/business/profile/edit'),
+              onTap: () => context.go('/business/profile-edit'),
             ),
             const SizedBox(height: AppSpacing.lg),
             _ProfileMenuCard(
