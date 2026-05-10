@@ -149,6 +149,13 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.normal,
   );
+
+  static final TextStyle notReady = GoogleFonts.manrope(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: AppColors.notReady,
+  );
+
   static final TextTheme textTheme = TextTheme(
     displayLarge: displayLgInter,
     titleLarge: titleLg,

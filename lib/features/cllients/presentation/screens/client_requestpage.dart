@@ -15,7 +15,6 @@ class ClientRequestpage extends StatefulWidget {
 class _ClientRequestpageState extends State<ClientRequestpage> {
   String selectedTab = 'All';
 
-  /////////**************sample data for request cards, replace with actual data from backend**************//////////
   List<Widget> requestCards = [
     RequestCard(
       name: 'Alana Smith',
@@ -98,7 +97,6 @@ class _ClientRequestpageState extends State<ClientRequestpage> {
     ),
   ];
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @override
   Widget build(BuildContext context) {
     return AppScaffold(

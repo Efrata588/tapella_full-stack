@@ -5,11 +5,11 @@ import 'package:tapella/core/widgets/glass_card.dart';
 class ProviderCard extends StatelessWidget {
   final String title;
   final String subtitle;
-  final List<GlassCard>? row1;
-  final List<GlassCard>? row2;
+  final List<Widget>? row1;
+  final List<Widget>? row2;
 
   const ProviderCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     this.row1,
@@ -18,14 +18,35 @@ class ProviderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final items = <Widget>[];
+    if (row1 != null) items.addAll(row1!);
+    if (row2 != null) items.addAll(row2!);
+
     return GlassCard(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header Section
           Text(title, style: AppTextStyles.providerCardTitle),
+          const SizedBox(height: 8),
           Text(subtitle, style: AppTextStyles.providerCardSub),
-          if (row1 != null) ...row1!,
-          if (row2 != null) ...row2!,
+
+          if (items.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 1.84,
+              ),
+              itemCount: items.length,
+              itemBuilder: (context, index) => items[index],
+            ),
+          ],
         ],
       ),
     );
