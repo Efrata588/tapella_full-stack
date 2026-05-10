@@ -17,6 +17,18 @@ class AppTextStyles {
     color: AppColors.appBarText,
   );
 
+  static final TextStyle providerCardTitle = GoogleFonts.inter(
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textSecondary,
+  );
+
+  static final TextStyle providerCardSub = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.success,
+  );
+
   static final TextStyle displayLgBold = GoogleFonts.manrope(
     fontSize: 36,
     fontWeight: FontWeight.w700,
