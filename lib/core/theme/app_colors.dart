@@ -79,4 +79,17 @@ class AppColors {
   static const Color glassBorder = Color(0x33FFFFFF);
   static const Color glassDark = Color(0x14000000);
   static const Color surfaceDark = surfaceDeep;
+
+  // client_request_card colors
+  static const Color requestAvatarBackground = Colors.white24;
+  static const Color requestAvatarCircle = Color.fromARGB(255, 25, 26, 36);
+  static const Color requestAvatarIcon = Colors.white;
+  static const Color requestAvatarShadow = Color(0xFF060E20);
+  static const Color requestBoxDecorationBackground = Color(0xFF4AE176);
+  static const Color requestBoxDecorationBorder = Color(0xFF1A1F31);
+
+  // service detail screen colors
+  static const Color iconColor = Color(0xFFC1C6D7);
+  static const Color reaedyToCall = Color(0xFF007AFF);
+  static const Color notReady = Color(0xFFFFB4AB);
 }

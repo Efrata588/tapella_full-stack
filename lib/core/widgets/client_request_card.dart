@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/glass_card.dart';
 import 'package:intl/intl.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 class RequestCard extends StatelessWidget {
   final String name;
@@ -8,8 +10,6 @@ class RequestCard extends StatelessWidget {
   final String proffession;
   final DateTime dateTime;
   final String location;
-  // final bool isActive;
-  //bool callPermissionGranted = false;
 
   const RequestCard({
     super.key,
@@ -18,8 +18,6 @@ class RequestCard extends StatelessWidget {
     required this.proffession,
     required this.dateTime,
     required this.location,
-    // this.isActive = true,
-    // this.callPermissionGranted = true,
   });
 
   @override
@@ -34,33 +32,28 @@ class RequestCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  backgroundColor: Colors.white24,
+                  backgroundColor: AppColors.requestAvatarBackground,
                   child: Stack(
                     alignment: Alignment.bottomRight,
                     children: [
                       CircleAvatar(
                         radius: 32,
-                        backgroundColor: const Color.fromARGB(255, 25, 26, 36),
+                        backgroundColor: AppColors.requestAvatarCircle,
                         child: Icon(
                           Icons.account_circle,
                           size: 64,
-                          color: Colors.white,
+                          color: AppColors.requestAvatarIcon,
                         ),
                       ),
 
-                      // 2. The Status Indicator
                       Container(
                         height: 16,
                         width: 16,
                         decoration: BoxDecoration(
-                          //color: isActive ? const Color(0xFF4AE176) : const Color(0xFF1A1F31),
-                          color: const Color(0xFF4AE176), // The green color
+                          color: AppColors.requestBoxDecorationBackground,
                           shape: BoxShape.circle,
-                          // This border creates the "cutout" look from your image
                           border: Border.all(
-                            color: const Color(
-                              0xFF1A1F31,
-                            ), // Match this to your card's background color
+                            color: AppColors.requestBoxDecorationBorder,
                             width: 2.5,
                           ),
                         ),
@@ -74,27 +67,10 @@ class RequestCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          color: Color(0xFFD8E2FF),
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'manrope',
-                          fontSize: 18,
-                          height: 1.5,
-                        ),
-                      ),
+                      Text(name, style: AppTextStyles.cardTitle),
                       const SizedBox(width: 8),
 
-                      Text(
-                        proffession,
-                        style: const TextStyle(
-                          color: Color(0xFFC1C6D7),
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'inter',
-                          fontSize: 14,
-                        ),
-                      ),
+                      Text(proffession, style: AppTextStyles.cardSub),
                     ],
                   ),
                 ),
@@ -112,18 +88,13 @@ class RequestCard extends StatelessWidget {
                     Icon(
                       Icons.calendar_today,
                       size: 16,
-                      color: Color(0xFFC1C6D7),
+                      color: AppColors.iconColor,
                       weight: 2,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       _formatDateTime(dateTime),
-                      style: const TextStyle(
-                        color: Color(0xFFC1C6D7),
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'inter',
-                        fontSize: 14,
-                      ),
+                      style: AppTextStyles.cardSub,
                     ),
                   ],
                 ),
@@ -134,19 +105,11 @@ class RequestCard extends StatelessWidget {
                     Icon(
                       Icons.location_on_outlined,
                       size: 16,
-                      color: Color(0xFFC1C6D7),
+                      color: AppColors.iconColor,
                       weight: 2,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      location,
-                      style: const TextStyle(
-                        color: Color(0xFFC1C6D7),
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'inter',
-                        fontSize: 14,
-                      ),
-                    ),
+                    Text(location, style: AppTextStyles.cardSub),
                   ],
                 ),
               ],
@@ -164,17 +127,17 @@ class RequestCard extends StatelessWidget {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF007AFF).withValues(alpha: 0.1),
+                        color: AppColors.reaedyToCall.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Color(0xFF007AFF), // outline color
+                          color: AppColors.reaedyToCall, // outline color
                           width: 0.5, // thickness
                         ),
                       ),
                       child: Icon(
                         Icons.phone_in_talk_outlined,
                         // color: callPermissionGranted ? const Color(0xFF007AFF) : const Color(0xFF4AE176),
-                        color: Color(0xFF007AFF),
+                        color: AppColors.reaedyToCall,
                         size: 16,
                         weight: 2,
                       ),
@@ -188,10 +151,10 @@ class RequestCard extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFB4AB).withValues(alpha: 0.1),
+                        color: AppColors.notReady.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Color(0xFFFFB4AB), // outline color
+                          color: AppColors.notReady, // outline color
                           width: 0.5, // thickness
                         ),
                       ),
@@ -199,20 +162,12 @@ class RequestCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.delete_outline,
-                            color: Color(0xFFFFB4AB),
+                            color: AppColors.notReady,
                             size: 16,
                             weight: 2,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Cancle Request',
-                            style: const TextStyle(
-                              color: Color(0xFFFFB4AB),
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'inter',
-                              fontSize: 12,
-                            ),
-                          ),
+                          Text('Cancle Request', style: AppTextStyles.notReady),
                         ],
                       ),
                     ),
@@ -238,17 +193,17 @@ Widget _statusCheck(String status) {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
 
       decoration: BoxDecoration(
-        color: const Color(0xFF4AE176).withValues(alpha: 0.1),
+        color: AppColors.successBright.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: Color(0xFF4AE176), // outline color
+          color: AppColors.successBright, // outline color
           width: 0.5, // thickness
         ),
       ),
       child: Text(
         status.toUpperCase(),
         style: TextStyle(
-          color: Color(0xFF4AE176),
+          color: AppColors.successBright,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
@@ -259,17 +214,17 @@ Widget _statusCheck(String status) {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
 
       decoration: BoxDecoration(
-        color: const Color(0xFFFACC15).withValues(alpha: 0.1),
+        color: AppColors.warning.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: Color(0xFFFACC15), // outline color
+          color: AppColors.warning, // outline color
           width: 0.5, // thickness
         ),
       ),
       child: Text(
         status.toUpperCase(),
         style: TextStyle(
-          color: Color(0xFFFACC15),
+          color: AppColors.warning,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
@@ -280,17 +235,17 @@ Widget _statusCheck(String status) {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
 
       decoration: BoxDecoration(
-        color: const Color(0xFFFFB4AB).withValues(alpha: 0.1),
+        color: AppColors.notReady.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: Color(0xFFFFB4AB), // outline color
+          color: AppColors.notReady, // outline color
           width: 0.5, // thickness
         ),
       ),
       child: Text(
         status.toUpperCase(),
         style: TextStyle(
-          color: Color(0xFFFFB4AB),
+          color: AppColors.notReady,
           fontWeight: FontWeight.bold,
           fontSize: 12,
         ),
