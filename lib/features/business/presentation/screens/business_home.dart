@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tapella/core/theme/app_colors.dart';
 import 'package:tapella/core/theme/app_text_styles.dart';
 import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
-import 'package:tapella/core/widgets/glass_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/theme/app_spacing.dart';
+import 'package:tapella/core/widgets/provider_stats.dart';
 
 class BusinessHome extends StatefulWidget {
   const BusinessHome({super.key});
@@ -33,37 +32,53 @@ class _BusinessHomeState extends State<BusinessHome> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          GlassCard(
-            padding: EdgeInsets.all(24),
-            child: Column(
-              children: [
-                Text(
-                  'ACCOUNT STATUS',
-                  style: AppTextStyles.labelSm.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                  textAlign: TextAlign.left,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ProviderStats(
+              title: 'ACCOUNT STATUS',
+              userStatuses: [
+                UserStatus(label: 'Active Provider', color: Colors.green),
+              ],
+              gridItems: [
+                StatGridItem(icon: Icons.star, value: '4.9', label: 'RATING'),
+                StatGridItem(icon: Icons.work, value: '120', label: 'JOBS'),
+                StatGridItem(icon: Icons.person, value: '50', label: 'CLIENTS'),
+                StatGridItem(
+                  icon: Icons.money,
+                  value: 'ETB 3500',
+                  label: 'EARNINGS',
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.xxl),
+            const SizedBox(height: AppSpacing.xxl),
 
-          // About Section
-          Text(
-            'Jobs',
-            style: AppTextStyles.servicesTitle,
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: 8),
+            // Jobs Section
+            Text(
+              'Jobs',
+              style: AppTextStyles.servicesTitle,
+              textAlign: TextAlign.left,
+            ),
+            const SizedBox(height: 8),
 
-          CustomBottomNavBar(
-            currentIndex: _currentIndex,
-            onTap: (index) => setState(() => _currentIndex = index),
-          ),
-        ],
+            //filter chips
+            // Row(
+            //   children: [
+            //     _buildCategoryChip("ALL SERVICES", isSelected: true),
+
+            //     _buildCategoryChip("PLUMBING"),
+
+            //     _buildCategoryChip("ELECTRICIAN"),
+            //   ],
+            // ),
+            CustomBottomNavBar(
+              currentIndex: _currentIndex,
+              onTap: (index) => setState(() => _currentIndex = index),
+            ),
+          ],
+        ),
       ),
     );
   }
