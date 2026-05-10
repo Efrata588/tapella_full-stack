@@ -8,7 +8,6 @@ import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:tapella/core/widgets/glass_card.dart';
 import 'package:tapella/core/widgets/primary_button.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tapella/core/widgets/red_button.dart';
 
 class ClientProfile extends StatelessWidget {
