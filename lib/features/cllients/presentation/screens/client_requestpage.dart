@@ -17,83 +17,43 @@ class _ClientRequestpageState extends State<ClientRequestpage> {
 
   List<Widget> requestCards = [
     RequestCard(
-      name: 'Alana Smith',
-      status: 'accepted',
-      proffession: 'Student',
-      dateTime: DateTime.now(),
-      location: 'New York',
-    ),
-
-    RequestCard(
-      name: 'Michael Johnson',
+      name: 'Efrate E',
       status: 'pending',
-      proffession: 'Software Engineer',
+      proffession: 'House Keeping',
       dateTime: DateTime.now(),
-      location: 'California',
+      location: 'Addis Ababa',
     ),
 
     RequestCard(
-      name: 'Sophia Brown',
+      name: 'Saron K',
       status: 'rejected',
-      proffession: 'UI/UX Designer',
+      proffession: 'House Keeping',
       dateTime: DateTime.now(),
-      location: 'Chicago',
+      location: 'Addis Ababa',
     ),
 
     RequestCard(
-      name: 'Daniel Wilson',
+      name: 'Kaleab M',
       status: 'accepted',
-      proffession: 'Doctor',
+      proffession: 'House Keeping',
       dateTime: DateTime.now(),
-      location: 'Boston',
+      location: 'Addis ababa',
     ),
 
     RequestCard(
-      name: 'Emma Davis',
+      name: 'Naomi M',
       status: 'pending',
-      proffession: 'Teacher',
+      proffession: 'House Keeping',
       dateTime: DateTime.now(),
-      location: 'Seattle',
+      location: 'Addis Ababa',
     ),
 
     RequestCard(
-      name: 'James Miller',
+      name: 'Elroi T',
       status: 'rejected',
-      proffession: 'Photographer',
+      proffession: 'House Keeping',
       dateTime: DateTime.now(),
-      location: 'Miami',
-    ),
-
-    RequestCard(
-      name: 'Olivia Taylor',
-      status: 'accepted',
-      proffession: 'Architect',
-      dateTime: DateTime.now(),
-      location: 'Houston',
-    ),
-
-    RequestCard(
-      name: 'William Anderson',
-      status: 'pending',
-      proffession: 'Lawyer',
-      dateTime: DateTime.now(),
-      location: 'Denver',
-    ),
-
-    RequestCard(
-      name: 'Ava Thomas',
-      status: 'rejected',
-      proffession: 'Nurse',
-      dateTime: DateTime.now(),
-      location: 'Atlanta',
-    ),
-
-    RequestCard(
-      name: 'Benjamin Moore',
-      status: 'accepted',
-      proffession: 'Data Analyst',
-      dateTime: DateTime.now(),
-      location: 'San Francisco',
+      location: 'Addis Ababa',
     ),
   ];
 

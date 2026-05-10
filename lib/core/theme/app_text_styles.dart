@@ -156,6 +156,11 @@ class AppTextStyles {
     color: AppColors.notReady,
   );
 
+  static final TextStyle providerCard = GoogleFonts.manrope(
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
+    color: AppColors.navBorder,
+  );
   static final TextTheme textTheme = TextTheme(
     displayLarge: displayLgInter,
     titleLarge: titleLg,

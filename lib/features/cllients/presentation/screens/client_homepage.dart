@@ -133,7 +133,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
               ],
             ),
             const SizedBox(height: 15),
-            // Top Rated Card (Horizontal or Single Large)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -158,7 +157,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
               ),
             ),
             const SizedBox(height: 15),
-            // List of available workers
             ...workers.asMap().entries.map((entry) {
               int index = entry.key;
               Map<String, dynamic> worker = entry.value;

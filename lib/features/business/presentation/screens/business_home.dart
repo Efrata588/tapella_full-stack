@@ -6,6 +6,7 @@ import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/widgets/primary_button.dart';
 import 'package:tapella/core/widgets/provider_card.dart';
+import 'package:tapella/core/widgets/provider_req_card.dart';
 import 'package:tapella/core/widgets/stat_card.dart';
 import 'package:tapella/core/widgets/tab_selector.dart';
 
@@ -73,7 +74,7 @@ class _BusinessHomeState extends State<BusinessHome> {
             ),
             SizedBox(height: 16),
             Text(
-              "Jobs",
+              "Past Jobs",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
@@ -81,7 +82,40 @@ class _BusinessHomeState extends State<BusinessHome> {
               selectedTab: selectedTab,
               onTabChanged: (tab) => setState(() => selectedTab = tab),
             ),
+            SizedBox(height: 8),
+            SizedBox(height: 8),
+            BusinessReqCard(
+              name: "Kaleab M",
+              status: "accepted",
+              proffession: "Programmer",
+              dateTime: DateTime.now(),
+              location: "Bole",
+              category: "Cleaning",
+              onComplete: () {},
+              onDelete: () {},
+            ),
             SizedBox(height: 16),
+            BusinessReqCard(
+              name: "Efrata E",
+              status: "accepted",
+              proffession: "Programmer",
+              dateTime: DateTime.now(),
+              location: "Tulu Dimtu",
+              category: "Cleaning",
+              onComplete: () {},
+              onDelete: () {},
+            ),
+            SizedBox(height: 16),
+            BusinessReqCard(
+              name: "Naomi M",
+              status: "accepted",
+              proffession: "Programmer",
+              dateTime: DateTime.now(),
+              location: "Megenagna",
+              category: "Cleaning",
+              onComplete: () {},
+              onDelete: () {},
+            ),
           ],
         ),
       ),

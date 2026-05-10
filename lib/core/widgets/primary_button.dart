@@ -28,7 +28,6 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final isDisabled = isLoading || onPressed == null;
     final background = fill;
     final borderColor = border
         ? (this.borderColor ?? AppColors.primaryTint)
