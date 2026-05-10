@@ -71,7 +71,6 @@ class AppTextField extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
 
-            // 👇 THIS IS THE SECRET
             prefixIconConstraints: const BoxConstraints(
               minHeight: 70,
               minWidth: 40,

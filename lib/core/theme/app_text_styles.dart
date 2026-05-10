@@ -58,6 +58,16 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.textSecondary,
   );
+  static final TextStyle cardTitle = GoogleFonts.manrope(
+    fontSize: 18,
+    fontWeight: FontWeight.normal,
+    color: AppColors.textPrimary,
+  );
+  static final TextStyle cardSub = GoogleFonts.manrope(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    color: AppColors.pillToggleInactive,
+  );
 
   static final TextStyle bodyMd = GoogleFonts.manrope(
     fontSize: 14,
@@ -76,6 +86,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.textSecondary,
   );
+  static final TextStyle profileType = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    color: AppColors.pillToggleInactive,
+  );
 
   static final TextStyle labelSm = GoogleFonts.manrope(
     fontSize: 10,
@@ -88,10 +103,20 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimary,
   );
+  static final TextStyle redButton = GoogleFonts.manrope(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.error,
+  );
 
   static final TextStyle providerName = GoogleFonts.inter(
     fontSize: 18,
     fontWeight: FontWeight.bold,
+    color: AppColors.textWhite,
+  );
+  static final TextStyle profileName = GoogleFonts.inter(
+    fontSize: 18,
+    fontWeight: FontWeight.normal,
     color: AppColors.textWhite,
   );
   static final TextStyle providerLevel = GoogleFonts.inter(

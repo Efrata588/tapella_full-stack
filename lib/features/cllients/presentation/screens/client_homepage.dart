@@ -4,7 +4,7 @@ import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:tapella/core/widgets/glass_card.dart';
-import '../../../../core/theme/app_colors.dart';
+import 'package:tapella/core/widgets/service_card.dart';
 
 class ClientHomePage extends StatefulWidget {
   const ClientHomePage({super.key});
@@ -16,7 +16,6 @@ class ClientHomePage extends StatefulWidget {
 class _ClientHomePageState extends State<ClientHomePage> {
   TextEditingController searchController = TextEditingController();
   int index = 0;
-  // Mock data for workers
   final List<Map<String, dynamic>> workers = [
     {
       "name": "Naomi M",
@@ -35,7 +34,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
       "isSaved": true,
     },
   ];
-  // Mock data for toprated
   final List<Map<String, dynamic>> topRated = [
     {"name": "Saron K", "loc": "Bole", "role": "Master Plumber", "rate": 4.9},
     {"name": "Abel T", "loc": "Kazanchis", "role": "Electrician", "rate": 4.8},
@@ -59,12 +57,10 @@ class _ClientHomePageState extends State<ClientHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            // Search Bar
             TextField(
               controller: searchController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                // Keeps the vertical alignment clean
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 15,
@@ -72,7 +68,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
                 hintText: "Hinted search text",
                 hintStyle: const TextStyle(color: Colors.grey),
 
-                // Using a simple Icon removes the need for extra Padding/IconButton wrappers
                 suffixIcon: const Icon(
                   Icons.search,
                   color: Color.fromARGB(255, 201, 200, 200),
@@ -87,7 +82,6 @@ class _ClientHomePageState extends State<ClientHomePage> {
               ),
             ),
             SizedBox(height: 20),
-            // Category Chips
             Row(
               children: [
                 _buildCategoryChip("ALL SERVICES", isSelected: true),
@@ -279,162 +273,162 @@ class _ClientHomePageState extends State<ClientHomePage> {
   }
 }
 
-class ServiceCard extends StatelessWidget {
-  final String name;
-  final String location;
-  final String role;
-  final double rating;
-  final String description;
-  final bool isSaved;
-  final VoidCallback onSaveToggle;
-  final VoidCallback onBookNow;
+// class ServiceCard extends StatelessWidget {
+//   final String name;
+//   final String location;
+//   final String role;
+//   final double rating;
+//   final String description;
+//   final bool isSaved;
+//   final VoidCallback onSaveToggle;
+//   final VoidCallback onBookNow;
 
-  const ServiceCard({
-    super.key,
-    required this.name,
-    required this.location,
-    required this.role,
-    required this.rating,
-    required this.description,
-    required this.isSaved,
-    required this.onSaveToggle,
-    required this.onBookNow,
-  });
+//   const ServiceCard({
+//     super.key,
+//     required this.name,
+//     required this.location,
+//     required this.role,
+//     required this.rating,
+//     required this.description,
+//     required this.isSaved,
+//     required this.onSaveToggle,
+//     required this.onBookNow,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return GlassCard(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const CircleAvatar(radius: 32, backgroundColor: Colors.grey),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        color: Color(0xFFDAE2FD),
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'manrope',
-                        height: 28 / 18,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          size: 14,
-                          color: Color(0xFFC1C6D7),
-                          weight: 0.3,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          location,
-                          style: const TextStyle(color: Color(0xFFC1C6D7)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
+//   @override
+//   Widget build(BuildContext context) {
+//     return GlassCard(
+//       margin: const EdgeInsets.only(bottom: 16),
+//       padding: const EdgeInsets.all(20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Row(
+//             children: [
+//               const CircleAvatar(radius: 32, backgroundColor: Colors.grey),
+//               const SizedBox(width: 16),
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       name,
+//                       style: const TextStyle(
+//                         color: Color(0xFFDAE2FD),
+//                         fontSize: 18,
+//                         fontWeight: FontWeight.normal,
+//                         fontFamily: 'manrope',
+//                         height: 28 / 18,
+//                         letterSpacing: 0,
+//                       ),
+//                     ),
+//                     Row(
+//                       children: [
+//                         Icon(
+//                           Icons.location_on_outlined,
+//                           size: 14,
+//                           color: Color(0xFFC1C6D7),
+//                           weight: 0.3,
+//                         ),
+//                         SizedBox(width: 4),
+//                         Text(
+//                           location,
+//                           style: const TextStyle(color: Color(0xFFC1C6D7)),
+//                         ),
+//                       ],
+//                     ),
+//                     SizedBox(height: 8),
 
-                    Row(
-                      children: [
-                        Text(
-                          "$role •",
-                          style: const TextStyle(
-                            color: Color(0xFFC1C6D7),
-                            fontFamily: 'inter',
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14,
-                            height: 20 / 14,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Icon(Icons.star, color: Colors.amberAccent, size: 16),
-                        SizedBox(width: 5),
-                        Text(
-                          '$rating',
-                          style: const TextStyle(color: Colors.white70),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: onSaveToggle,
-                icon: Icon(
-                  isSaved ? Icons.bookmark : Icons.bookmark_border,
-                  color: isSaved ? Colors.blue : Colors.blueAccent,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Text(
-            description,
-            style: const TextStyle(color: Colors.grey, fontSize: 14),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: onBookNow,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFA6C8FF),
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 12,
-                  ),
-                ),
-                child: const Text(
-                  "Book Now",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
+//                     Row(
+//                       children: [
+//                         Text(
+//                           "$role •",
+//                           style: const TextStyle(
+//                             color: Color(0xFFC1C6D7),
+//                             fontFamily: 'inter',
+//                             fontWeight: FontWeight.normal,
+//                             fontSize: 14,
+//                             height: 20 / 14,
+//                             letterSpacing: 0,
+//                           ),
+//                         ),
+//                         SizedBox(width: 8),
+//                         Icon(Icons.star, color: Colors.amberAccent, size: 16),
+//                         SizedBox(width: 5),
+//                         Text(
+//                           '$rating',
+//                           style: const TextStyle(color: Colors.white70),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               IconButton(
+//                 onPressed: onSaveToggle,
+//                 icon: Icon(
+//                   isSaved ? Icons.bookmark : Icons.bookmark_border,
+//                   color: isSaved ? Colors.blue : Colors.blueAccent,
+//                 ),
+//               ),
+//             ],
+//           ),
+//           const SizedBox(height: 15),
+//           Text(
+//             description,
+//             style: const TextStyle(color: Colors.grey, fontSize: 14),
+//           ),
+//           const SizedBox(height: 20),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               ElevatedButton(
+//                 onPressed: onBookNow,
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: const Color(0xFFA6C8FF),
+//                   foregroundColor: Colors.black,
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(15),
+//                   ),
+//                   padding: const EdgeInsets.symmetric(
+//                     horizontal: 30,
+//                     vertical: 12,
+//                   ),
+//                 ),
+//                 child: const Text(
+//                   "Book Now",
+//                   style: TextStyle(fontWeight: FontWeight.bold),
+//                 ),
+//               ),
 
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF007AFF).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Color(0xFF007AFF), // outline color
-                      width: 0.5, // thickness
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.phone_in_talk_outlined,
-                    // color: callPermissionGranted ? const Color(0xFF007AFF) : const Color(0xFF4AE176),
-                    color: Color(0xFF007AFF),
-                    size: 16,
-                    weight: 2,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+//               InkWell(
+//                 onTap: () {},
+//                 child: Container(
+//                   padding: const EdgeInsets.symmetric(
+//                     horizontal: 24,
+//                     vertical: 12,
+//                   ),
+//                   decoration: BoxDecoration(
+//                     color: const Color(0xFF007AFF).withValues(alpha: 0.1),
+//                     borderRadius: BorderRadius.circular(20),
+//                     border: Border.all(
+//                       color: Color(0xFF007AFF), // outline color
+//                       width: 0.5, // thickness
+//                     ),
+//                   ),
+//                   child: Icon(
+//                     Icons.phone_in_talk_outlined,
+//                     // color: callPermissionGranted ? const Color(0xFF007AFF) : const Color(0xFF4AE176),
+//                     color: Color(0xFF007AFF),
+//                     size: 16,
+//                     weight: 2,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

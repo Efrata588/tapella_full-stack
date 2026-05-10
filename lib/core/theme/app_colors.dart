@@ -54,6 +54,10 @@ class AppColors {
   static const Color textSecondary = Color(0xFFC1C6D7);
   static const Color textMuted = Color(0xFF8B90A0);
 
+  // Profile Circle
+  static const Color profileCirclePurple = Color(0xFFE9DFFF);
+  static const Color profileIconP = Color(0xFF6B4BAF);
+
   // Input Labels
   static const Color labelTextPrimary = Color(0xFFADC6FF);
   static const Color reviewName = Color(0xFFD8E2FF);
