@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/theme/app_colors.dart';
 import 'package:tapella/core/theme/app_spacing.dart';
@@ -8,13 +9,29 @@ import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:tapella/core/widgets/glass_card.dart';
 import 'package:tapella/core/widgets/primary_button.dart';
+import 'package:tapella/core/widgets/profile_avatar.dart';
 import 'package:tapella/core/widgets/red_button.dart';
+import 'package:tapella/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tapella/features/profile/presentation/widgets/account_actions.dart';
 
-class ClientProfile extends StatelessWidget {
+class ClientProfile extends ConsumerStatefulWidget {
   const ClientProfile({super.key});
 
   @override
+  ConsumerState<ClientProfile> createState() => _ClientProfileState();
+}
+
+class _ClientProfileState extends ConsumerState<ClientProfile> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(authProvider.notifier).refreshProfile());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authProvider).user;
+
     return AppScaffold(
       extendBody: true,
       padding: EdgeInsets.zero,
@@ -28,13 +45,10 @@ class ClientProfile extends StatelessWidget {
           switch (index) {
             case 0:
               context.go('/client/home');
-              break;
             case 1:
               context.go('/client/requests');
-              break;
             case 2:
               context.go('/client/profile');
-              break;
           }
         },
       ),
@@ -46,74 +60,56 @@ class ClientProfile extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: AppSpacing.md),
-
             GestureDetector(
               onTap: () => context.go('/client/profile/edit'),
-              child: Container(
-                width: 110,
-                height: 110,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.profileCirclePurple,
-                ),
-                child: const Icon(
-                  Icons.person_outline,
-                  size: 60,
-                  color: AppColors.profileIconP,
-                ),
+              child: ProfileAvatar(
+                profileImageBase64: user?.profileImage,
+                onTap: () => context.go('/client/profile/edit'),
               ),
             ),
-
             const SizedBox(height: AppSpacing.lg),
-
-            Text('Bekelle Mola', style: AppTextStyles.profileName),
+            Text(user?.displayName ?? '—', style: AppTextStyles.profileName),
             const SizedBox(height: 4),
-            Text('PREMIUM MEMBER', style: AppTextStyles.profileType),
-
+            Text(user?.roleLabel ?? 'MEMBER', style: AppTextStyles.profileType),
+            if (user?.email != null) ...[
+              const SizedBox(height: 8),
+              Text(user!.email, style: AppTextStyles.bodySm.copyWith(color: AppColors.textMuted)),
+            ],
             const SizedBox(height: AppSpacing.xl),
-
             _ProfileMenuCard(
               icon: Icons.person_outline,
               title: 'Personal Information',
-              subtitle: 'Name, email, and bio',
+              subtitle: 'Name, email, phone & location',
               onTap: () => context.go('/client/profile/edit'),
             ),
             const SizedBox(height: AppSpacing.lg),
             _ProfileMenuCard(
               icon: Icons.bookmark_border,
-              title: 'Saved Services',
-              subtitle: 'Your favorite services',
+              title: 'Browse Services',
+              subtitle: 'Find providers near you',
               onTap: () => context.go('/client/home'),
             ),
             const SizedBox(height: AppSpacing.lg),
             _ProfileMenuCard(
-              icon: Icons.help_outline,
-              title: 'Help',
-              subtitle: 'Support tickets & documentation',
-              onTap: () {},
+              icon: Icons.list_alt,
+              title: 'My Requests',
+              subtitle: 'Track your bookings',
+              onTap: () => context.go('/client/requests'),
             ),
-
             const SizedBox(height: AppSpacing.xxl),
-
             PrimaryButton(
-              label: "Log Out",
+              label: 'Log Out',
               height: 56,
               width: 277,
               fill: AppColors.primaryBlue,
-              onPressed: () => context.go("/client/login"),
+              onPressed: () => handleLogout(context, ref, isProvider: false),
             ),
-
             const SizedBox(height: AppSpacing.lg),
             RedButton(
-              label: "Delete Account",
+              label: 'Delete Account',
               height: 56,
               width: 277,
-              onPressed: () => {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Account Deleted Successfully!')),
-                ),
-                context.go("/client/login"),
-              },
+              onPressed: () => handleDeleteAccount(context, ref, isProvider: false),
             ),
             const SizedBox(height: 100),
           ],

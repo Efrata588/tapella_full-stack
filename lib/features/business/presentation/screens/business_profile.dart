@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/theme/app_colors.dart';
 import 'package:tapella/core/theme/app_spacing.dart';
@@ -8,16 +9,31 @@ import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:tapella/core/widgets/glass_card.dart';
 import 'package:tapella/core/widgets/primary_button.dart';
-import 'package:tapella/core/widgets/provider_card.dart';
+import 'package:tapella/core/widgets/profile_avatar.dart';
 import 'package:tapella/core/widgets/red_button.dart';
-import 'package:tapella/core/widgets/stat_card.dart';
-import 'package:tapella/core/widgets/profile_card.dart';
+import 'package:tapella/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tapella/features/profile/presentation/widgets/account_actions.dart';
+import 'package:tapella/features/services/presentation/providers/listings_provider.dart';
 
-class BusinessProfile extends StatelessWidget {
+class BusinessProfile extends ConsumerStatefulWidget {
   const BusinessProfile({super.key});
 
   @override
+  ConsumerState<BusinessProfile> createState() => _BusinessProfileState();
+}
+
+class _BusinessProfileState extends ConsumerState<BusinessProfile> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(authProvider.notifier).refreshProfile());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authProvider).user;
+    final myListings = ref.watch(myListingsProvider);
+
     return AppScaffold(
       extendBody: true,
       padding: EdgeInsets.zero,
@@ -31,13 +47,10 @@ class BusinessProfile extends StatelessWidget {
           switch (index) {
             case 0:
               context.go('/business/home');
-              break;
             case 1:
               context.go('/business/requests');
-              break;
             case 2:
               context.go('/business/profile');
-              break;
           }
         },
       ),
@@ -49,48 +62,65 @@ class BusinessProfile extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: AppSpacing.md),
-            Text("Account Settings", style: AppTextStyles.profileHeader),
-            SizedBox(height: 4),
+            Text('Account Settings', style: AppTextStyles.profileHeader),
+            const SizedBox(height: 4),
             Text(
-              "Manage your profile and preferences",
+              'Manage your profile and preferences',
               style: AppTextStyles.profileSubHeader,
             ),
-            SizedBox(height: 8),
-            ProviderCard(
-              title: "Account Status",
-              subtitle: "● Active Provider",
-              row1: [
-                const StatCard(value: "4.9", label: "RATING"),
-                const StatCard(value: "124", label: "JOBS"),
-
-                const StatIconCard(
-                  icon: Icon(Icons.verified),
-                  label: "VERIFIED",
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-            Text("My Services", style: AppTextStyles.profileHeader),
             const SizedBox(height: 16),
-
-            ProfileCard(
-              name: "Saron Kiflu",
-              location: "Megenagna",
-              profession: "Plumbing • Expert",
-              rating: 4.8,
-              description: "Master of pipes, pressure, and precision",
-              icon: Icons.account_circle,
-              onEdit: () {},
-              onDelete: () {},
+            ProfileAvatar(profileImageBase64: user?.profileImage),
+            Text(user?.displayName ?? '—', style: AppTextStyles.profileName),
+            if (user?.profession != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                user!.profession!.toUpperCase(),
+                style: AppTextStyles.bodySm.copyWith(
+                  color: AppColors.primaryBlue,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ],
+            const SizedBox(height: 4),
+            Text(user?.email ?? '', style: AppTextStyles.bodySm),
+            const SizedBox(height: 24),
+            Text('My Services', style: AppTextStyles.profileHeader),
+            const SizedBox(height: 16),
+            myListings.when(
+              loading: () => const CircularProgressIndicator(),
+              error: (e, _) => Text('$e'),
+              data: (listings) {
+                if (listings.isEmpty) {
+                  return const Text('No listings yet', style: TextStyle(color: Colors.grey));
+                }
+                return Column(
+                  children: listings.map((l) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: GlassCard(
+                        child: ListTile(
+                          title: Text(l.title, style: const TextStyle(color: Colors.white)),
+                          subtitle: Text(
+                            '${l.category} • ★ ${l.ratingAvg.toStringAsFixed(1)}',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          trailing: const Icon(Icons.chevron_right, color: Colors.white54),
+                          onTap: () => context.go('/service/detail/${l.id}'),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
             ),
             const SizedBox(height: 16),
             PrimaryButton(
-              label: "New Listing",
+              label: 'New Listing',
               height: 56,
               width: 277,
               fill: AppColors.primaryBlue,
-              onPressed: () => context.go("/business/new-listing"),
+              onPressed: () => context.go('/business/new-listing'),
             ),
             const SizedBox(height: 16),
             _ProfileMenuCard(
@@ -99,42 +129,20 @@ class BusinessProfile extends StatelessWidget {
               subtitle: 'Name, email, and bio',
               onTap: () => context.go('/business/profile-edit'),
             ),
-            const SizedBox(height: AppSpacing.lg),
-            _ProfileMenuCard(
-              icon: Icons.bookmark_border,
-              title: 'Saved Services',
-              subtitle: 'Your favorite services',
-              onTap: () => context.go('/business/home'),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            _ProfileMenuCard(
-              icon: Icons.help_outline,
-              title: 'Help',
-              subtitle: 'Support tickets & documentation',
-              onTap: () {},
-            ),
-
             const SizedBox(height: AppSpacing.xxl),
-
             PrimaryButton(
-              label: "Log Out",
+              label: 'Log Out',
               height: 56,
               width: 277,
               fill: AppColors.primaryBlue,
-              onPressed: () => context.go("/business/login"),
+              onPressed: () => handleLogout(context, ref, isProvider: true),
             ),
-
             const SizedBox(height: AppSpacing.lg),
             RedButton(
-              label: "Delete Account",
+              label: 'Delete Account',
               height: 56,
               width: 277,
-              onPressed: () => {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Account Deleted Successfully!')),
-                ),
-                context.go("/business/login"),
-              },
+              onPressed: () => handleDeleteAccount(context, ref, isProvider: true),
             ),
             const SizedBox(height: 100),
           ],
@@ -186,10 +194,7 @@ class _ProfileMenuCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              Icons.chevron_right,
-              color: AppColors.textSecondary.withValues(alpha: 0.8),
-            ),
+            const Icon(Icons.chevron_right, color: Colors.white54),
           ],
         ),
       ),

@@ -13,6 +13,8 @@ class NewJob extends StatelessWidget {
   final String category;
   final VoidCallback? onComplete;
   final VoidCallback? onDelete;
+  final VoidCallback? onAccept;
+  final VoidCallback? onReject;
 
   const NewJob({
     super.key,
@@ -24,6 +26,8 @@ class NewJob extends StatelessWidget {
     required this.category,
     this.onComplete,
     this.onDelete,
+    this.onAccept,
+    this.onReject,
   });
 
   @override
@@ -127,7 +131,7 @@ class NewJob extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: onAccept,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       shape: RoundedRectangleBorder(
@@ -144,7 +148,7 @@ class NewJob extends StatelessWidget {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: onReject,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       shape: RoundedRectangleBorder(

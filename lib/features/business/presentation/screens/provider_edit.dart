@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/theme/app_colors.dart';
 import 'package:tapella/core/theme/app_spacing.dart';
@@ -7,50 +8,140 @@ import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
 import 'package:tapella/core/widgets/bottom_navbar.dart';
 import 'package:tapella/core/widgets/primary_button.dart';
+import 'package:tapella/core/widgets/profile_avatar.dart';
 import 'package:tapella/core/widgets/red_button.dart';
 import 'package:tapella/core/widgets/text_field.dart';
+import 'package:tapella/core/models/listing_model.dart';
+import 'package:tapella/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tapella/features/profile/data/profile_repository.dart';
+import 'package:tapella/features/profile/presentation/widgets/account_actions.dart';
 
-class ProviderEditScreen extends StatelessWidget {
+class ProviderEditScreen extends ConsumerStatefulWidget {
   const ProviderEditScreen({super.key});
 
   @override
+  ConsumerState<ProviderEditScreen> createState() => _ProviderEditScreenState();
+}
+
+class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
+  late final TextEditingController _name;
+  late final TextEditingController _email;
+  late final TextEditingController _phone;
+  late final TextEditingController _location;
+  late final TextEditingController _bio;
+  String? _profileImage;
+  String? _selectedProfession;
+  bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final user = ref.read(authProvider).user;
+    _name = TextEditingController(text: user?.displayName ?? '');
+    _email = TextEditingController(text: user?.email ?? '');
+    _phone = TextEditingController(text: user?.phone ?? '');
+    _location = TextEditingController(text: user?.location ?? '');
+    _bio = TextEditingController(text: user?.bio ?? '');
+    _profileImage = user?.profileImage;
+
+    final initialProfession = user?.profession;
+    if (appCategories.contains(initialProfession)) {
+      _selectedProfession = initialProfession;
+    } else {
+      _selectedProfession = appCategories.first;
+    }
+
+    Future.microtask(() async {
+      try {
+        final fresh = await ref.read(profileRepositoryProvider).fetchProfile();
+        if (mounted) {
+          _name.text = fresh.displayName;
+          _email.text = fresh.email;
+          _phone.text = fresh.phone ?? '';
+          _location.text = fresh.location ?? '';
+          _bio.text = fresh.bio ?? '';
+          final freshProfession = fresh.profession;
+          if (appCategories.contains(freshProfession)) {
+            _selectedProfession = freshProfession;
+          } else {
+            _selectedProfession = appCategories.first;
+          }
+          setState(() => _profileImage = fresh.profileImage);
+          ref.read(authProvider.notifier).setUser(fresh);
+        }
+      } catch (_) {}
+    });
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _email.dispose();
+    _phone.dispose();
+    _location.dispose();
+    _bio.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final image = await pickProfileImageBase64();
+    if (image != null) setState(() => _profileImage = image);
+  }
+
+  Future<void> _save() async {
+    setState(() => _saving = true);
+    try {
+      final user = await ref.read(profileRepositoryProvider).updateProfile(
+            displayName: _name.text.trim(),
+            email: _email.text.trim(),
+            phone: _phone.text.trim(),
+            location: _location.text.trim(),
+            bio: _bio.text.trim(),
+            profileImage: _profileImage,
+            profession: _selectedProfession,
+          );
+      ref.read(authProvider.notifier).setUser(user);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated')),
+        );
+        context.go('/business/profile');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authProvider).user;
+
     return AppScaffold(
       extendBody: true,
       padding: EdgeInsets.zero,
       appBar: CustomAppBar(
-        leading: const Icon(Icons.menu_rounded, color: AppColors.textPrimary),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: AppSpacing.lg),
-            child: GestureDetector(
-              onTap: () => context.go('/client/profile'),
-              child: const CircleAvatar(
-                radius: 16,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.person,
-                  size: 18,
-                  color: AppColors.profileIcon,
-                ),
-              ),
-            ),
-          ),
-        ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          onPressed: () => context.go('/business/profile'),
+        ),
+        actions: const [],
       ),
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: 2,
         onTap: (index) {
           switch (index) {
             case 0:
-              context.go('/client/home');
-              break;
+              context.go('/business/home');
             case 1:
-              context.go('/client/requests');
-              break;
+              context.go('/business/requests');
             case 2:
-              context.go('/client/profile');
-              break;
+              context.go('/business/profile');
           }
         },
       ),
@@ -61,85 +152,78 @@ class ProviderEditScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const SizedBox(height: AppSpacing.md),
-
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
-                  width: 110,
-                  height: 110,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFE9DFFF),
-                  ),
-                  child: const Icon(
-                    Icons.person_outline,
-                    size: 60,
-                    color: Color(0xFF6B4BAF),
-                  ),
-                ),
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryBlue,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.background, width: 2),
-                  ),
-                  child: const Icon(Icons.edit, size: 14, color: Colors.white),
-                ),
-              ],
+            ProfileAvatar(
+              profileImageBase64: _profileImage,
+              showEditBadge: true,
+              onTap: _pickImage,
             ),
-
             const SizedBox(height: AppSpacing.lg),
-
-            Text('Elroi', style: AppTextStyles.profileName),
+            Text(user?.displayName ?? 'Profile', style: AppTextStyles.profileName),
             const SizedBox(height: 4),
-            Text('PREMIUM PROVIDER', style: AppTextStyles.profileType),
-
+            Text('SERVICE PROVIDER', style: AppTextStyles.profileType),
             const SizedBox(height: AppSpacing.xl),
-
-            /// FORM FIELDS
-            const AppTextField(label: 'FULL NAME', hintText: 'Name'),
+            AppTextField(controller: _name, label: 'BUSINESS NAME', hintText: 'Your business name'),
             const SizedBox(height: AppSpacing.lg),
-            const AppTextField(
+            AppTextField(
+              controller: _email,
               label: 'EMAIL ADDRESS',
-              hintText: 'test@example.com',
+              hintText: 'business@email.com',
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: AppSpacing.lg),
-            const AppTextField(
+            AppTextField(
+              controller: _phone,
               label: 'PHONE NUMBER',
               hintText: '+251900000000',
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: AppSpacing.lg),
-            const AppTextField(label: 'LOCATION', hintText: 'Piassa'),
-
+            DropdownButtonFormField<String>(
+              value: _selectedProfession,
+              dropdownColor: const Color(0xFF151E3D),
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'PROFESSION',
+                labelStyle: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold),
+                prefixIcon: const Icon(Icons.work_outline, color: Colors.grey),
+                filled: true,
+                fillColor: const Color(0xFF151E3D),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              items: appCategories.map((cat) {
+                return DropdownMenuItem<String>(
+                  value: cat,
+                  child: Text(cat),
+                );
+              }).toList(),
+              onChanged: (val) {
+                setState(() {
+                  _selectedProfession = val;
+                });
+              },
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            AppTextField(controller: _location, label: 'LOCATION', hintText: 'Addis Ababa'),
+            const SizedBox(height: AppSpacing.lg),
+            AppTextField(controller: _bio, label: 'BIO', hintText: 'Describe your services'),
             const SizedBox(height: AppSpacing.xxl),
-
             PrimaryButton(
-              label: "Save Changes",
+              label: _saving ? 'Saving...' : 'Save Changes',
               height: 56,
               width: 277,
               fill: AppColors.primaryBlue,
+              isLoading: _saving,
+              onPressed: _saving ? null : _save,
             ),
-
             const SizedBox(height: AppSpacing.lg),
-            RedButton(label: "Deactivate Account", height: 56, width: 277),
-            const SizedBox(height: AppSpacing.sm),
-            Center(
-              child: Padding(
-                padding: EdgeInsetsGeometry.fromLTRB(128, 0, 128, 0),
-                child: Text(
-                  "Deactivating your account will hide your services from the marketplace. This action can be undone later.",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColors.pillToggleInactive.withValues(alpha: 0.6),
-                  ),
-                ),
-              ),
+            RedButton(
+              label: 'Delete Account',
+              height: 56,
+              width: 277,
+              onPressed: () => handleDeleteAccount(context, ref, isProvider: true),
             ),
             const SizedBox(height: 100),
           ],

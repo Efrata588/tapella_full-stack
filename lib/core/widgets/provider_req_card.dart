@@ -14,6 +14,7 @@ class BusinessReqCard extends StatelessWidget {
   final String category;
   final VoidCallback? onComplete;
   final VoidCallback? onDelete;
+  final double? money;
 
   const BusinessReqCard({
     super.key,
@@ -25,13 +26,14 @@ class BusinessReqCard extends StatelessWidget {
     required this.category,
     this.onComplete,
     this.onDelete,
+    this.money,
   });
 
   @override
   Widget build(BuildContext context) {
     return GlassCard(
       child: Container(
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.all(14),
         child: Column(
           children: [
             Row(
@@ -46,7 +48,7 @@ class BusinessReqCard extends StatelessWidget {
                       CircleAvatar(
                         radius: 32,
                         backgroundColor: AppColors.requestAvatarCircle,
-                        child: Icon(
+                        child: const Icon(
                           Icons.account_circle,
                           size: 64,
                           color: AppColors.requestAvatarIcon,
@@ -76,7 +78,7 @@ class BusinessReqCard extends StatelessWidget {
                     children: [
                       Text(name, style: AppTextStyles.cardTitle),
                       const SizedBox(width: 8),
-                      Text("Professional"),
+                      const Text("Professional"),
                       Text(proffession, style: AppTextStyles.cardSub),
                     ],
                   ),
@@ -92,7 +94,7 @@ class BusinessReqCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.calendar_today,
                       size: 16,
                       color: AppColors.iconColor,
@@ -109,7 +111,7 @@ class BusinessReqCard extends StatelessWidget {
 
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_on_outlined,
                       size: 16,
                       color: AppColors.iconColor,
@@ -121,70 +123,93 @@ class BusinessReqCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: SizedBox(
-                width: 140,
-                child: const MiniTextField(
-                  label: 'Earnings',
-                  hintText: 'ETB',
-                  prefixIcon: Icons.attach_money_outlined,
+            if (status == 'accepted') ...[
+              const SizedBox(height: 8),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: SizedBox(
+                  width: 140,
+                  child: MiniTextField(
+                    label: 'Earnings',
+                    hintText: 'ETB',
+                    prefixIcon: Icons.attach_money_outlined,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 12,
-                      ),
-                    ),
-                    child: const Text(
-                      "Finish Job",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.notReady.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppColors.notReady, // outline color
-                          width: 0.5, // thickness
+              Padding(
+                padding: const EdgeInsets.only(top: 18.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: onComplete,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryBlue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 12,
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.delete_outline,
-                            color: AppColors.notReady,
-                            size: 16,
-                            weight: 2,
-                          ),
-                        ],
+                      child: const Text(
+                        "Finish Job",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                ],
+                    InkWell(
+                      onTap: onDelete,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.notReady.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: AppColors.notReady, // outline color
+                            width: 0.5, // thickness
+                          ),
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.delete_outline,
+                              color: AppColors.notReady,
+                              size: 16,
+                              weight: 2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ] else ...[
+              if (money != null) ...[
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.attach_money,
+                      size: 18,
+                      color: AppColors.successBright,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Earnings: ETB ${money!.toStringAsFixed(0)}',
+                      style: AppTextStyles.cardSub.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ],
           ],
         ),
       ),
@@ -208,6 +233,23 @@ Widget _statusCheck(String status) {
       ),
       child: Text(
         status.toUpperCase(),
+        style: const TextStyle(
+          color: AppColors.successBright,
+          fontWeight: FontWeight.bold,
+          fontSize: 11,
+        ),
+      ),
+    );
+  } else if (status == 'completed') {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.successBright.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.successBright, width: 0.5),
+      ),
+      child: const Text(
+        "DONE",
         style: TextStyle(
           color: AppColors.successBright,
           fontWeight: FontWeight.bold,
@@ -225,7 +267,7 @@ Widget _statusCheck(String status) {
       ),
       child: Text(
         status.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.warning,
           fontWeight: FontWeight.bold,
           fontSize: 11,
@@ -242,7 +284,7 @@ Widget _statusCheck(String status) {
       ),
       child: Text(
         status.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.notReady,
           fontWeight: FontWeight.bold,
           fontSize: 11,

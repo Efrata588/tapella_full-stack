@@ -1,142 +1,138 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/core/widgets/app_bar.dart';
 import 'package:tapella/core/widgets/app_scaffold.dart';
+import 'package:tapella/core/widgets/confirm_dialog.dart';
 import 'package:tapella/core/widgets/tab_selector.dart';
+import 'package:tapella/features/bookings/presentation/providers/bookings_provider.dart';
 import '../../../../core/widgets/client_request_card.dart';
 import '../../../../core/widgets/bottom_navbar.dart';
 
-class ClientRequestpage extends StatefulWidget {
+class ClientRequestpage extends ConsumerStatefulWidget {
   const ClientRequestpage({super.key});
 
   @override
-  State<ClientRequestpage> createState() => _ClientRequestpageState();
+  ConsumerState<ClientRequestpage> createState() => _ClientRequestpageState();
 }
 
-class _ClientRequestpageState extends State<ClientRequestpage> {
+class _ClientRequestpageState extends ConsumerState<ClientRequestpage> {
   String selectedTab = 'All';
 
-  List<Widget> requestCards = [
-    RequestCard(
-      name: 'Efrate E',
-      status: 'pending',
-      proffession: 'House Keeping',
-      dateTime: DateTime.now(),
-      location: 'Addis Ababa',
-    ),
-
-    RequestCard(
-      name: 'Saron K',
-      status: 'rejected',
-      proffession: 'House Keeping',
-      dateTime: DateTime.now(),
-      location: 'Addis Ababa',
-    ),
-
-    RequestCard(
-      name: 'Kaleab M',
-      status: 'accepted',
-      proffession: 'House Keeping',
-      dateTime: DateTime.now(),
-      location: 'Addis ababa',
-    ),
-
-    RequestCard(
-      name: 'Naomi M',
-      status: 'pending',
-      proffession: 'House Keeping',
-      dateTime: DateTime.now(),
-      location: 'Addis Ababa',
-    ),
-
-    RequestCard(
-      name: 'Elroi T',
-      status: 'rejected',
-      proffession: 'House Keeping',
-      dateTime: DateTime.now(),
-      location: 'Addis Ababa',
-    ),
-  ];
+  Future<void> _cancelBooking(String bookingId) async {
+    final confirmed = await showConfirmDialog(
+      context,
+      title: 'Cancel Request',
+      message: 'Are you sure you want to cancel this service request?',
+      confirmLabel: 'Cancel Request',
+      isDestructive: true,
+    );
+    if (!confirmed) return;
+    try {
+      await ref.read(bookingActionsProvider).cancel(bookingId);
+      ref.invalidate(customerBookingsProvider);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Request cancelled')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bookingsAsync = ref.watch(customerBookingsProvider);
+
     return AppScaffold(
       extendBody: true,
       appBar: CustomAppBar(
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.account_circle, size: 32),
+            onPressed: () => context.go('/client/profile'),
+            icon: const Icon(Icons.account_circle, size: 32),
           ),
         ],
       ),
       body: SafeArea(
         child: SizedBox.expand(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'My Requests',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white,
-                  height: 1.7,
-                ),
+                style: TextStyle(fontSize: 24, color: Colors.white, height: 1.7),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'TRACK AND MANAGE YOUR SERVICE ORDERS',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  height: 1.7,
-                  letterSpacing: 0.35,
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey, letterSpacing: 0.35),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TabSelector(
                 selectedTab: selectedTab,
                 onTabChanged: (tab) => setState(() => selectedTab = tab),
               ),
-              SizedBox(height: 16),
-
+              const SizedBox(height: 16),
               Expanded(
-                child: ListView.separated(
-                  itemCount: requestCards.length,
-                  itemBuilder: (context, index) => requestCards[index],
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 24),
+                child: bookingsAsync.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (e, _) => Center(child: Text('$e', style: const TextStyle(color: Colors.red))),
+                  data: (bookings) {
+                    final filtered = selectedTab == 'All'
+                        ? bookings
+                        : bookings.where((b) {
+                            if (selectedTab == 'Rejected') {
+                              return b.status == 'rejected' || b.status == 'cancelled';
+                            }
+                            return b.status == selectedTab.toLowerCase();
+                          }).toList();
+                    if (filtered.isEmpty) {
+                      return const Center(
+                        child: Text('No requests', style: TextStyle(color: Colors.grey)),
+                      );
+                    }
+                    return ListView.separated(
+                      itemCount: filtered.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 24),
+                      itemBuilder: (context, index) {
+                        final b = filtered[index];
+                        return RequestCard(
+                          name: b.providerName,
+                          status: b.status,
+                          proffession: b.listingTitle,
+                          dateTime: DateTime.tryParse(b.scheduledDate ?? '') ?? DateTime.now(),
+                          location: 'Addis Ababa',
+                          onTap: () => context.go('/service/detail/${b.listingId}'),
+                          onCancel: b.status == 'pending'
+                              ? () => _cancelBooking(b.id)
+                              : null,
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ],
           ),
         ),
       ),
-
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: 1,
         onTap: (index) {
-          _onItemTapped(index);
+          switch (index) {
+            case 0:
+              context.go('/client/home');
+            case 1:
+              context.go('/client/requests');
+            case 2:
+              context.go('/client/profile');
+          }
         },
       ),
     );
-  }
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        context.go('/client/home');
-        break;
-
-      case 1:
-        context.go('/client/requests');
-        break;
-
-      case 2:
-        context.go('/client/profile');
-        break;
-    }
   }
 }
