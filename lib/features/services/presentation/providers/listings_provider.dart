@@ -1,7 +1,9 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/data/cache_result.dart';
 import '../../../../core/models/listing_model.dart';
 import '../../data/listings_repository.dart';
+
+part 'listings_provider.g.dart';
 
 class ListingsState {
   final List<ListingModel> listings;
@@ -17,10 +19,8 @@ class ListingsState {
   });
 }
 
-final listingsProvider =
-    NotifierProvider<ListingsNotifier, ListingsState>(ListingsNotifier.new);
-
-class ListingsNotifier extends Notifier<ListingsState> {
+@riverpod
+class Listings extends _$Listings {
   @override
   ListingsState build() {
     load();
@@ -33,29 +33,25 @@ class ListingsNotifier extends Notifier<ListingsState> {
       final result = await ref
           .read(listingsRepositoryProvider)
           .getListings(search: search, category: category);
-      state = ListingsState(
-        listings: result.data,
-        isStale: result.isStale,
-      );
+      state = ListingsState(listings: result.data, isStale: result.isStale);
     } catch (e) {
       state = ListingsState(error: e.toString());
     }
   }
 }
 
-final listingDetailProvider =
-    FutureProvider.family<CacheResult<ListingModel>, String>((ref, id) {
+@riverpod
+Future<CacheResult<ListingModel>> listingDetail(Ref ref, String id) {
   return ref.read(listingsRepositoryProvider).getById(id);
-});
+}
 
-final myListingsProvider = FutureProvider.autoDispose<List<ListingModel>>((ref) {
+@riverpod
+Future<List<ListingModel>> myListings(Ref ref) {
   return ref.read(listingsRepositoryProvider).getMyListings();
-});
+}
 
-final createListingProvider =
-    AsyncNotifierProvider<CreateListingNotifier, void>(CreateListingNotifier.new);
-
-class CreateListingNotifier extends AsyncNotifier<void> {
+@riverpod
+class CreateListing extends _$CreateListing {
   @override
   Future<void> build() async {}
 

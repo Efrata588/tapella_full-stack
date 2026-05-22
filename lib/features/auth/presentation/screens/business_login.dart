@@ -16,7 +16,8 @@ class BusinessLoginScreen extends ConsumerStatefulWidget {
   const BusinessLoginScreen({super.key});
 
   @override
-  ConsumerState<BusinessLoginScreen> createState() => _BusinessLoginScreenState();
+  ConsumerState<BusinessLoginScreen> createState() =>
+      _BusinessLoginScreenState();
 }
 
 class _BusinessLoginScreenState extends ConsumerState<BusinessLoginScreen> {
@@ -31,7 +32,9 @@ class _BusinessLoginScreenState extends ConsumerState<BusinessLoginScreen> {
   }
 
   Future<void> _login() async {
-    final ok = await ref.read(authProvider.notifier).login(
+    final ok = await ref
+        .read(authProvider.notifier)
+        .login(
           email: _email.text.trim(),
           password: _password.text,
           isProvider: true,
@@ -108,7 +111,9 @@ class _BusinessLoginScreenState extends ConsumerState<BusinessLoginScreen> {
                     const SizedBox(height: 12),
                     Text(
                       auth.error!,
-                      style: AppTextStyles.bodySm.copyWith(color: Colors.redAccent),
+                      style: AppTextStyles.bodySm.copyWith(
+                        color: Colors.redAccent,
+                      ),
                     ),
                   ],
                   const SizedBox(height: 40),

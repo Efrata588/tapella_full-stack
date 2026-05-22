@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../database/app_database.dart';
+
+part 'cache_invalidator.g.dart';
 
 class CacheInvalidator {
   Future<Database> get _db => AppDatabase.instance();
@@ -44,6 +46,5 @@ class CacheInvalidator {
   }
 }
 
-final cacheInvalidatorProvider = Provider<CacheInvalidator>((ref) {
-  return CacheInvalidator();
-});
+@riverpod
+CacheInvalidator cacheInvalidator(Ref ref) => CacheInvalidator();

@@ -1,32 +1,35 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/models/booking_model.dart';
 import '../../data/bookings_repository.dart';
 
-final customerBookingsProvider =
-    FutureProvider.autoDispose<List<BookingModel>>((ref) async {
+part 'bookings_provider.g.dart';
+
+@riverpod
+Future<List<BookingModel>> customerBookings(Ref ref) async {
   final result = await ref.read(bookingsRepositoryProvider).customerBookings();
   return result.data;
-});
+}
 
-final customerBookingsStaleProvider = FutureProvider.autoDispose<bool>((ref) async {
+@riverpod
+Future<bool> customerBookingsStale(Ref ref) async {
   final result = await ref.read(bookingsRepositoryProvider).customerBookings();
   return result.isStale;
-});
+}
 
-final incomingBookingsProvider =
-    FutureProvider.autoDispose<List<BookingModel>>((ref) async {
+@riverpod
+Future<List<BookingModel>> incomingBookings(Ref ref) async {
   final result = await ref.read(bookingsRepositoryProvider).incomingBookings();
   return result.data;
-});
+}
 
-final historyBookingsProvider =
-    FutureProvider.autoDispose<List<BookingModel>>((ref) async {
+@riverpod
+Future<List<BookingModel>> historyBookings(Ref ref) async {
   final result = await ref.read(bookingsRepositoryProvider).historyBookings();
   return result.data;
-});
+}
 
-final bookingActionsProvider =
-    Provider<BookingActions>((ref) => BookingActions(ref));
+@riverpod
+BookingActions bookingActions(Ref ref) => BookingActions(ref);
 
 class BookingActions {
   final Ref ref;

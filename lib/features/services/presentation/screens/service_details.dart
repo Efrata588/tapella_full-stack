@@ -42,7 +42,9 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
   Future<void> _submitReview(String bookingId) async {
     setState(() => _submittingReview = true);
     try {
-      await ref.read(submitReviewProvider).submit(
+      await ref
+          .read(submitReviewProvider)
+          .submit(
             bookingId: bookingId,
             rating: _reviewRating,
             comment: _reviewComment.text.trim(),
@@ -57,7 +59,9 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('$e')));
       }
     } finally {
       if (mounted) setState(() => _submittingReview = false);
@@ -65,12 +69,12 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
   }
 
   Future<void> _book() async {
-    final scheduled = '${_year.text}-${_month.text.padLeft(2, '0')}-${_day.text.padLeft(2, '0')}';
+    final scheduled =
+        '${_year.text}-${_month.text.padLeft(2, '0')}-${_day.text.padLeft(2, '0')}';
     try {
-      await ref.read(bookingActionsProvider).book(
-            listingId: widget.listingId,
-            scheduledDate: scheduled,
-          );
+      await ref
+          .read(bookingActionsProvider)
+          .book(listingId: widget.listingId, scheduledDate: scheduled);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -85,9 +89,9 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     }
   }
@@ -111,7 +115,11 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
             padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
             child: IconButton(
               onPressed: () => context.go('/client/profile'),
-              icon: const Icon(Icons.account_circle, color: Colors.white, size: 30),
+              icon: const Icon(
+                Icons.account_circle,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
           ),
         ],
@@ -122,11 +130,13 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
       ),
       body: listingAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e', style: const TextStyle(color: Colors.white))),
+        error: (e, _) => Center(
+          child: Text('$e', style: const TextStyle(color: Colors.white)),
+        ),
         data: (result) {
           final listing = result.data;
           String? reviewBookingId;
-          for (final b in bookingsAsync.valueOrNull ?? []) {
+          for (final b in bookingsAsync.asData?.value ?? []) {
             if (b.listingId == widget.listingId && b.status == 'completed') {
               reviewBookingId = b.id;
               break;
@@ -165,25 +175,43 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                               ),
                             ),
                             const SizedBox(height: AppSpacing.xl),
-                            Text(listing.providerName, style: AppTextStyles.providerName),
-                            Text(listing.title, style: AppTextStyles.providerLevel),
+                            Text(
+                              listing.providerName,
+                              style: AppTextStyles.providerName,
+                            ),
+                            Text(
+                              listing.title,
+                              style: AppTextStyles.providerLevel,
+                            ),
                             if (result.isStale)
                               const Text(
                                 'Offline data',
-                                style: TextStyle(color: Colors.amber, fontSize: 12),
+                                style: TextStyle(
+                                  color: Colors.amber,
+                                  fontSize: 12,
+                                ),
                               ),
                           ],
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xxl),
-                      Text('About the service', style: AppTextStyles.servicesTitle),
+                      Text(
+                        'About the service',
+                        style: AppTextStyles.servicesTitle,
+                      ),
                       const SizedBox(height: 8),
-                      Text(listing.description, style: AppTextStyles.aboutDetail),
+                      Text(
+                        listing.description,
+                        style: AppTextStyles.aboutDetail,
+                      ),
                       const SizedBox(height: AppSpacing.xl),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Customer Reviews', style: AppTextStyles.servicesM),
+                          Text(
+                            'Customer Reviews',
+                            style: AppTextStyles.servicesM,
+                          ),
                           Text('★ ${listing.ratingAvg.toStringAsFixed(1)}'),
                         ],
                       ),
@@ -211,10 +239,13 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                         Row(
                           children: List.generate(5, (i) {
                             return IconButton(
-                              onPressed: () => setState(() => _reviewRating = i + 1),
+                              onPressed: () =>
+                                  setState(() => _reviewRating = i + 1),
                               icon: Icon(
                                 Icons.star,
-                                color: i < _reviewRating ? Colors.amber : Colors.grey,
+                                color: i < _reviewRating
+                                    ? Colors.amber
+                                    : Colors.grey,
                               ),
                             );
                           }),
@@ -228,7 +259,9 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                             hintStyle: TextStyle(color: Colors.grey),
                             filled: true,
                             fillColor: Color(0xFF151E3D),
-                            border: OutlineInputBorder(borderSide: BorderSide.none),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -236,7 +269,11 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                           onPressed: _submittingReview
                               ? null
                               : () => _submitReview(reviewBookingId!),
-                          child: Text(_submittingReview ? 'Submitting...' : 'Submit Review'),
+                          child: Text(
+                            _submittingReview
+                                ? 'Submitting...'
+                                : 'Submit Review',
+                          ),
                         ),
                       ],
                       const SizedBox(height: 24),
@@ -250,7 +287,10 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                       ),
                       const Text(
                         'Choose service date',
-                        style: TextStyle(color: AppColors.navBorder, fontSize: 14),
+                        style: TextStyle(
+                          color: AppColors.navBorder,
+                          fontSize: 14,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Row(
@@ -290,7 +330,8 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                           if (listing.phone.isNotEmpty)
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.callActive.withValues(alpha: 0.2),
+                                backgroundColor: AppColors.callActive
+                                    .withValues(alpha: 0.2),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 16,
                                   horizontal: 32,
@@ -342,7 +383,11 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
                   ),
                   Row(
                     children: List.generate(stars, (index) {
-                      return const Icon(Icons.star, color: Colors.amber, size: 12);
+                      return const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                        size: 12,
+                      );
                     }),
                   ),
                 ],
@@ -363,7 +408,11 @@ class _ServiceDetailState extends ConsumerState<ServiceDetail> {
     );
   }
 
-  Widget _buildDateInput(String hint, TextEditingController controller, {double width = 75}) {
+  Widget _buildDateInput(
+    String hint,
+    TextEditingController controller, {
+    double width = 75,
+  }) {
     return Container(
       width: width,
       decoration: BoxDecoration(

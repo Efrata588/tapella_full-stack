@@ -1,17 +1,20 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/exceptions/api_exception.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/network/api_constants.dart';
 import '../../../core/network/dio_client.dart';
 import '../../auth/data/auth_repository.dart';
 
-final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
+part 'profile_repository.g.dart';
+
+@riverpod
+ProfileRepository profileRepository(Ref ref) {
   return ProfileRepository(
     ref.watch(dioProvider),
     ref.watch(authRepositoryProvider),
   );
-});
+}
 
 class ProfileRepository {
   final Dio _dio;
@@ -45,11 +48,11 @@ class ProfileRepository {
         data: {
           'displayName': displayName,
           'email': email,
-          if (phone != null) 'phone': phone,
-          if (location != null) 'location': location,
-          if (bio != null) 'bio': bio,
-          if (profileImage != null) 'profileImage': profileImage,
-          if (profession != null) 'profession': profession,
+          'phone': ?phone,
+          'location': ?location,
+          'bio': ?bio,
+          'profileImage': ?profileImage,
+          'profession': ?profession,
         },
       );
       final user = UserModel.fromJson(res.data['data'] as Map<String, dynamic>);

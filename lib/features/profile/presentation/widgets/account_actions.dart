@@ -41,7 +41,9 @@ Future<void> handleDeleteAccount(
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(ref.read(authProvider).error ?? 'Could not delete account'),
+        content: Text(
+          ref.read(authProvider).error ?? 'Could not delete account',
+        ),
       ),
     );
   }

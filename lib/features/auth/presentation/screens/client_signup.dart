@@ -35,12 +35,14 @@ class _ClientSignupScreenState extends ConsumerState<ClientSignupScreen> {
 
   Future<void> _signup() async {
     if (_password.text != _confirm.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
       return;
     }
-    final ok = await ref.read(authProvider.notifier).register(
+    final ok = await ref
+        .read(authProvider.notifier)
+        .register(
           email: _email.text.trim(),
           password: _password.text,
           displayName: _name.text.trim(),
@@ -48,7 +50,9 @@ class _ClientSignupScreenState extends ConsumerState<ClientSignupScreen> {
         );
     if (!ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(ref.read(authProvider).error ?? 'Signup failed')),
+        SnackBar(
+          content: Text(ref.read(authProvider).error ?? 'Signup failed'),
+        ),
       );
     }
   }

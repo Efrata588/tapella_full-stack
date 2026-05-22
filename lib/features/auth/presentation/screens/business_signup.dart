@@ -16,7 +16,8 @@ class BusinessSignupScreen extends ConsumerStatefulWidget {
   const BusinessSignupScreen({super.key});
 
   @override
-  ConsumerState<BusinessSignupScreen> createState() => _BusinessSignupScreenState();
+  ConsumerState<BusinessSignupScreen> createState() =>
+      _BusinessSignupScreenState();
 }
 
 class _BusinessSignupScreenState extends ConsumerState<BusinessSignupScreen> {
@@ -36,7 +37,9 @@ class _BusinessSignupScreenState extends ConsumerState<BusinessSignupScreen> {
   }
 
   Future<void> _signup() async {
-    final ok = await ref.read(authProvider.notifier).register(
+    final ok = await ref
+        .read(authProvider.notifier)
+        .register(
           email: _email.text.trim(),
           password: _password.text,
           displayName: _name.text.trim(),
@@ -46,7 +49,9 @@ class _BusinessSignupScreenState extends ConsumerState<BusinessSignupScreen> {
         );
     if (!ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(ref.read(authProvider).error ?? 'Signup failed')),
+        SnackBar(
+          content: Text(ref.read(authProvider).error ?? 'Signup failed'),
+        ),
       );
     }
   }
@@ -109,13 +114,16 @@ class _BusinessSignupScreenState extends ConsumerState<BusinessSignupScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    value: _selectedProfession,
+                    initialValue: _selectedProfession,
                     dropdownColor: const Color(0xFF151E3D),
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: 'Profession',
                       labelStyle: const TextStyle(color: Colors.grey),
-                      prefixIcon: const Icon(Icons.work_outline, color: Colors.grey),
+                      prefixIcon: const Icon(
+                        Icons.work_outline,
+                        color: Colors.grey,
+                      ),
                       filled: true,
                       fillColor: const Color(0xFF151E3D),
                       border: OutlineInputBorder(

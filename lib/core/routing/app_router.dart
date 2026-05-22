@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tapella/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tapella/features/cllients/presentation/screens/client_profile.dart';
@@ -7,12 +8,13 @@ import 'package:tapella/features/cllients/presentation/screens/client_requestpag
 import 'package:tapella/features/cllients/presentation/screens/client_homepage.dart';
 import '../../features/screens.dart';
 
-final routerProvider = Provider<GoRouter>((ref) {
+part 'app_router.g.dart';
+
+@riverpod
+GoRouter router(Ref ref) {
   // Only rebuild router when auth identity changes — not during submit loading.
   ref.watch(
-    authProvider.select(
-      (s) => (s.initialized, s.user?.id, s.user?.role),
-    ),
+    authProvider.select((s) => (s.initialized, s.user?.id, s.user?.role)),
   );
   final auth = ref.read(authProvider);
 
@@ -22,7 +24,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!auth.initialized) return null;
 
       final path = state.matchedLocation;
-      final isAuthRoute = path.contains('/login') ||
+      final isAuthRoute =
+          path.contains('/login') ||
           path.contains('/signup') ||
           path.contains('/forgot-password');
 
@@ -111,9 +114,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/service/detail/:id',
-        builder: (context, state) => ServiceDetail(
-          listingId: state.pathParameters['id']!,
-        ),
+        builder: (context, state) =>
+            ServiceDetail(listingId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/service/detail/alt-1',
@@ -133,4 +135,4 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
-});
+}

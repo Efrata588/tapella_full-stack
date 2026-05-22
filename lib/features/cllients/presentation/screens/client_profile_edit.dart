@@ -75,7 +75,9 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
   Future<void> _save() async {
     setState(() => _saving = true);
     try {
-      final user = await ref.read(profileRepositoryProvider).updateProfile(
+      final user = await ref
+          .read(profileRepositoryProvider)
+          .updateProfile(
             displayName: _name.text.trim(),
             email: _email.text.trim(),
             phone: _phone.text.trim(),
@@ -85,16 +87,16 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
           );
       ref.read(authProvider.notifier).setUser(user);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Profile updated')));
         context.go('/client/profile');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -141,9 +143,16 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
               onTap: _pickImage,
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text(user?.displayName ?? 'Profile', style: AppTextStyles.profileName),
+            Text(
+              user?.displayName ?? 'Profile',
+              style: AppTextStyles.profileName,
+            ),
             const SizedBox(height: AppSpacing.xl),
-            AppTextField(controller: _name, label: 'FULL NAME', hintText: 'Your name'),
+            AppTextField(
+              controller: _name,
+              label: 'FULL NAME',
+              hintText: 'Your name',
+            ),
             const SizedBox(height: AppSpacing.lg),
             AppTextField(
               controller: _email,
@@ -159,9 +168,17 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: AppSpacing.lg),
-            AppTextField(controller: _location, label: 'LOCATION', hintText: 'Addis Ababa'),
+            AppTextField(
+              controller: _location,
+              label: 'LOCATION',
+              hintText: 'Addis Ababa',
+            ),
             const SizedBox(height: AppSpacing.lg),
-            AppTextField(controller: _bio, label: 'BIO', hintText: 'Tell providers about yourself'),
+            AppTextField(
+              controller: _bio,
+              label: 'BIO',
+              hintText: 'Tell providers about yourself',
+            ),
             const SizedBox(height: AppSpacing.xxl),
             PrimaryButton(
               label: _saving ? 'Saving...' : 'Save Changes',
@@ -176,7 +193,8 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
               label: 'Delete Account',
               height: 56,
               width: 277,
-              onPressed: () => handleDeleteAccount(context, ref, isProvider: false),
+              onPressed: () =>
+                  handleDeleteAccount(context, ref, isProvider: false),
             ),
             const SizedBox(height: 100),
           ],
