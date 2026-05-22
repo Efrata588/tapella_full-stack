@@ -1,23 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
-const db = require('../db/database');
+const { prisma } = require('../db/database');
 const env = require('../config/env');
 const { AppError } = require('../middleware/errorHandler');
 
-function sanitizeUser(row) {
-  if (!row) return null;
+function sanitizeUser(user) {
+  if (!user) return null;
   return {
-    id: row.id,
-    email: row.email,
-    role: row.role,
-    displayName: row.display_name,
-    phone: row.phone,
-    location: row.location,
-    bio: row.bio,
-    profileImage: row.profile_image,
-    profession: row.profession,
-    createdAt: row.created_at,
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    displayName: user.displayName,
+    phone: user.phone,
+    location: user.location,
+    bio: user.bio,
+    profileImage: user.profileImage,
+    profession: user.profession,
+    createdAt: user.createdAt.toISOString(),
   };
 }
 
@@ -29,29 +28,41 @@ function signTokens(user) {
 }
 
 async function register({ email, password, displayName, role, phone, location, profession }) {
-  const existing = db.get('SELECT id FROM users WHERE email = ?', [email.toLowerCase()]);
+  const existing = await prisma.user.findUnique({
+    where: { email: email.toLowerCase() }
+  });
+  
   if (existing) {
     throw new AppError('Email already registered', 409, 'EMAIL_EXISTS');
   }
-  const id = uuidv4();
+
   const passwordHash = await bcrypt.hash(password, 10);
-  const now = new Date().toISOString();
-  db.run(
-    `INSERT INTO users (id, email, password_hash, role, display_name, phone, location, profession, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, email.toLowerCase(), passwordHash, role, displayName, phone || null, location || null, profession || null, now],
-  );
-  const user = db.get('SELECT * FROM users WHERE id = ?', [id]);
+  
+  const user = await prisma.user.create({
+    data: {
+      email: email.toLowerCase(),
+      passwordHash,
+      role,
+      displayName,
+      phone: phone || null,
+      location: location || null,
+      profession: profession || null,
+    }
+  });
+
   const tokens = signTokens(user);
   return { ...tokens, user: sanitizeUser(user) };
 }
 
 async function login({ email, password, expectedRole }) {
-  const user = db.get('SELECT * FROM users WHERE email = ?', [email.toLowerCase()]);
+  const user = await prisma.user.findUnique({
+    where: { email: email.toLowerCase() }
+  });
+
   if (!user) {
     throw new AppError('Invalid credentials', 401, 'INVALID_CREDENTIALS');
   }
-  const valid = await bcrypt.compare(password, user.password_hash);
+  const valid = await bcrypt.compare(password, user.passwordHash);
   if (!valid) {
     throw new AppError('Invalid credentials', 401, 'INVALID_CREDENTIALS');
   }
@@ -62,10 +73,12 @@ async function login({ email, password, expectedRole }) {
   return { ...tokens, user: sanitizeUser(user) };
 }
 
-function refresh(refreshToken) {
+async function refresh(refreshToken) {
   try {
     const payload = jwt.verify(refreshToken, env.jwtRefreshSecret);
-    const user = db.get('SELECT * FROM users WHERE id = ?', [payload.sub]);
+    const user = await prisma.user.findUnique({
+      where: { id: payload.sub }
+    });
     if (!user) throw new AppError('User not found', 404, 'NOT_FOUND');
     return signTokens(user);
   } catch {
@@ -73,59 +86,68 @@ function refresh(refreshToken) {
   }
 }
 
-function getMe(userId) {
-  const user = db.get('SELECT * FROM users WHERE id = ?', [userId]);
+async function getMe(userId) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId }
+  });
   if (!user) throw new AppError('User not found', 404, 'NOT_FOUND');
   return sanitizeUser(user);
 }
 
-function updateProfile(userId, body) {
-  const user = db.get('SELECT * FROM users WHERE id = ?', [userId]);
+async function updateProfile(userId, body) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId }
+  });
   if (!user) throw new AppError('User not found', 404, 'NOT_FOUND');
 
   if (body.email && body.email.toLowerCase() !== user.email) {
-    const taken = db.get('SELECT id FROM users WHERE email = ? AND id != ?', [
-      body.email.toLowerCase(),
-      userId,
-    ]);
+    const taken = await prisma.user.findFirst({
+      where: {
+        email: body.email.toLowerCase(),
+        id: { not: userId }
+      }
+    });
     if (taken) throw new AppError('Email already in use', 409, 'EMAIL_EXISTS');
   }
 
-  db.run(
-    `UPDATE users SET
-      display_name = ?,
-      email = ?,
-      phone = ?,
-      location = ?,
-      bio = ?,
-      profile_image = ?,
-      profession = ?
-     WHERE id = ?`,
-    [
-      body.displayName ?? user.display_name,
-      (body.email ?? user.email).toLowerCase(),
-      body.phone ?? user.phone,
-      body.location ?? user.location,
-      body.bio ?? user.bio,
-      body.profileImage !== undefined ? body.profileImage : user.profile_image,
-      body.profession !== undefined ? body.profession : user.profession,
-      userId,
-    ],
-  );
-  return getMe(userId);
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      displayName: body.displayName ?? user.displayName,
+      email: (body.email ?? user.email).toLowerCase(),
+      phone: body.phone ?? user.phone,
+      location: body.location ?? user.location,
+      bio: body.bio ?? user.bio,
+      profileImage: body.profileImage !== undefined ? body.profileImage : user.profileImage,
+      profession: body.profession !== undefined ? body.profession : user.profession,
+    }
+  });
+  
+  return sanitizeUser(updatedUser);
 }
 
-function deleteAccount(userId) {
-  const user = db.get('SELECT * FROM users WHERE id = ?', [userId]);
+async function deleteAccount(userId) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId }
+  });
   if (!user) throw new AppError('User not found', 404, 'NOT_FOUND');
 
-  db.run('DELETE FROM reviews WHERE customer_id = ? OR provider_id = ?', [userId, userId]);
-  db.run('DELETE FROM bookings WHERE customer_id = ? OR provider_id = ?', [userId, userId]);
-  db.run('UPDATE listings SET deleted_at = ? WHERE provider_id = ?', [
-    new Date().toISOString(),
-    userId,
+  await prisma.$transaction([
+    prisma.review.deleteMany({
+      where: { OR: [{ customerId: userId }, { providerId: userId }] }
+    }),
+    prisma.booking.deleteMany({
+      where: { OR: [{ customerId: userId }, { providerId: userId }] }
+    }),
+    prisma.listing.updateMany({
+      where: { providerId: userId },
+      data: { deletedAt: new Date() }
+    }),
+    prisma.user.delete({
+      where: { id: userId }
+    })
   ]);
-  db.run('DELETE FROM users WHERE id = ?', [userId]);
+  
   return { deleted: true };
 }
 

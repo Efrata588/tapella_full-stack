@@ -1,18 +1,25 @@
-const db = require('../db/database');
+const { prisma } = require('../db/database');
 const { AppError } = require('./errorHandler');
 
-function bookingAccess(req, _res, next) {
-  const booking = db.get('SELECT * FROM bookings WHERE id = ?', [req.params.id]);
-  if (!booking) {
-    return next(new AppError('Booking not found', 404, 'NOT_FOUND'));
+async function bookingAccess(req, _res, next) {
+  try {
+    const booking = await prisma.booking.findUnique({
+      where: { id: req.params.id }
+    });
+
+    if (!booking) {
+      return next(new AppError('Booking not found', 404, 'NOT_FOUND'));
+    }
+    const isCustomer = req.user.role === 'customer' && booking.customerId === req.user.id;
+    const isProvider = req.user.role === 'provider' && booking.providerId === req.user.id;
+    if (!isCustomer && !isProvider) {
+      return next(new AppError('Forbidden', 403, 'FORBIDDEN'));
+    }
+    req.booking = booking;
+    next();
+  } catch (e) {
+    next(e);
   }
-  const isCustomer = req.user.role === 'customer' && booking.customer_id === req.user.id;
-  const isProvider = req.user.role === 'provider' && booking.provider_id === req.user.id;
-  if (!isCustomer && !isProvider) {
-    return next(new AppError('Forbidden', 403, 'FORBIDDEN'));
-  }
-  req.booking = booking;
-  next();
 }
 
 module.exports = { bookingAccess };

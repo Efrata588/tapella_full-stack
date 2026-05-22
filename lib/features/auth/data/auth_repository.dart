@@ -35,18 +35,24 @@ class AuthRepository {
         ? ApiConstants.authRegisterProvider
         : ApiConstants.authRegisterCustomer;
     try {
-      final res = await _dio.post(path, data: {
-        'email': email,
-        'password': password,
-        'displayName': displayName,
-        if (phone != null) 'phone': phone,
-        if (profession != null) 'profession': profession,
-      });
+      final res = await _dio.post(
+        path,
+        data: {
+          'email': email,
+          'password': password,
+          'displayName': displayName,
+          'phone': ?phone,
+          'profession': ?profession,
+        },
+      );
       return _persistSession(res.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       throw ApiExceptionMapper.fromDio(e);
     } catch (e) {
-      throw AppException(message: 'Could not save session: $e', code: 'STORAGE_ERROR');
+      throw AppException(
+        message: 'Could not save session: $e',
+        code: 'STORAGE_ERROR',
+      );
     }
   }
 
@@ -55,18 +61,22 @@ class AuthRepository {
     required String password,
     required bool isProvider,
   }) async {
-    final path =
-        isProvider ? ApiConstants.authLoginProvider : ApiConstants.authLoginCustomer;
+    final path = isProvider
+        ? ApiConstants.authLoginProvider
+        : ApiConstants.authLoginCustomer;
     try {
-      final res = await _dio.post(path, data: {
-        'email': email,
-        'password': password,
-      });
+      final res = await _dio.post(
+        path,
+        data: {'email': email, 'password': password},
+      );
       return _persistSession(res.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       throw ApiExceptionMapper.fromDio(e);
     } catch (e) {
-      throw AppException(message: 'Could not save session: $e', code: 'STORAGE_ERROR');
+      throw AppException(
+        message: 'Could not save session: $e',
+        code: 'STORAGE_ERROR',
+      );
     }
   }
 
@@ -76,7 +86,9 @@ class AuthRepository {
       if (token == null || token.isEmpty) return null;
       try {
         final res = await _dio.get(ApiConstants.authMe);
-        final user = UserModel.fromJson(res.data['data'] as Map<String, dynamic>);
+        final user = UserModel.fromJson(
+          res.data['data'] as Map<String, dynamic>,
+        );
         await _cacheUser(user);
         return user;
       } on DioException catch (_) {
@@ -116,9 +128,6 @@ class AuthRepository {
   }
 
   Future<void> _cacheUser(UserModel user) async {
-    await _storage.write(
-      key: _userCacheKey,
-      value: jsonEncode(user.toJson()),
-    );
+    await _storage.write(key: _userCacheKey, value: jsonEncode(user.toJson()));
   }
 }

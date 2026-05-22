@@ -75,7 +75,7 @@ async function refresh(req, res, next) {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) throw new AppError('Refresh token required', 400, 'VALIDATION_ERROR');
-    const result = authService.refresh(refreshToken);
+    const result = await authService.refresh(refreshToken);
     res.json({ success: true, data: result });
   } catch (e) {
     next(e);
@@ -84,7 +84,7 @@ async function refresh(req, res, next) {
 
 async function me(req, res, next) {
   try {
-    const user = authService.getMe(req.user.id);
+    const user = await authService.getMe(req.user.id);
     res.json({ success: true, data: user });
   } catch (e) {
     next(e);
@@ -93,7 +93,7 @@ async function me(req, res, next) {
 
 async function updateProfile(req, res, next) {
   try {
-    const user = authService.updateProfile(req.user.id, req.body);
+    const user = await authService.updateProfile(req.user.id, req.body);
     res.json({ success: true, data: user });
   } catch (e) {
     next(e);
@@ -102,7 +102,7 @@ async function updateProfile(req, res, next) {
 
 async function deleteAccount(req, res, next) {
   try {
-    const data = authService.deleteAccount(req.user.id);
+    const data = await authService.deleteAccount(req.user.id);
     res.json({ success: true, data });
   } catch (e) {
     next(e);
