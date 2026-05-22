@@ -45,16 +45,6 @@ class AuthRepository {
           'email': email,
           'password': password,
           'displayName': displayName,
-          'phone': phone,
-          'profession': profession,
-        },
-      );
-      final res = await _dio.post(
-        path,
-        data: {
-          'email': email,
-          'password': password,
-          'displayName': displayName,
           'phone': ?phone,
           'profession': ?profession,
         },
@@ -63,10 +53,6 @@ class AuthRepository {
     } on DioException catch (e) {
       throw ApiExceptionMapper.fromDio(e);
     } catch (e) {
-      throw AppException(
-        message: 'Could not save session: $e',
-        code: 'STORAGE_ERROR',
-      );
       throw AppException(
         message: 'Could not save session: $e',
         code: 'STORAGE_ERROR',
@@ -82,14 +68,7 @@ class AuthRepository {
     final path = isProvider
         ? ApiConstants.authLoginProvider
         : ApiConstants.authLoginCustomer;
-    final path = isProvider
-        ? ApiConstants.authLoginProvider
-        : ApiConstants.authLoginCustomer;
     try {
-      final res = await _dio.post(
-        path,
-        data: {'email': email, 'password': password},
-      );
       final res = await _dio.post(
         path,
         data: {'email': email, 'password': password},
@@ -98,10 +77,6 @@ class AuthRepository {
     } on DioException catch (e) {
       throw ApiExceptionMapper.fromDio(e);
     } catch (e) {
-      throw AppException(
-        message: 'Could not save session: $e',
-        code: 'STORAGE_ERROR',
-      );
       throw AppException(
         message: 'Could not save session: $e',
         code: 'STORAGE_ERROR',
@@ -118,9 +93,7 @@ class AuthRepository {
         final user = UserModel.fromJson(
           res.data['data'] as Map<String, dynamic>,
         );
-        final user = UserModel.fromJson(
-          res.data['data'] as Map<String, dynamic>,
-        );
+
         await _cacheUser(user);
         return user;
       } on DioException catch (_) {
