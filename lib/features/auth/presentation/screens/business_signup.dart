@@ -36,7 +36,7 @@ class _BusinessSignupScreenState extends ConsumerState<BusinessSignupScreen> {
   }
 
   Future<void> _signup() async {
-    final ok = await ref.read(authProvider.notifier).register(
+    final ok = await ref.read(authNotifierProvider.notifier).register(
           email: _email.text.trim(),
           password: _password.text,
           displayName: _name.text.trim(),
@@ -46,14 +46,14 @@ class _BusinessSignupScreenState extends ConsumerState<BusinessSignupScreen> {
         );
     if (!ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(ref.read(authProvider).error ?? 'Signup failed')),
+        SnackBar(content: Text(ref.read(authNotifierProvider).error ?? 'Signup failed')),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authProvider);
+    final auth = ref.watch(authNotifierProvider);
 
     return AppScaffold(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),

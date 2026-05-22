@@ -1,7 +1,11 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class SavedListingsNotifier extends StateNotifier<Set<String>> {
-  SavedListingsNotifier() : super({});
+part 'saved_listings_provider.g.dart';
+
+@riverpod
+class SavedListingsNotifier extends _$SavedListingsNotifier {
+  @override
+  Set<String> build() => {};
 
   void toggleSave(String listingId) {
     if (state.contains(listingId)) {
@@ -11,11 +15,5 @@ class SavedListingsNotifier extends StateNotifier<Set<String>> {
     }
   }
 
-  bool isSaved(String listingId) {
-    return state.contains(listingId);
-  }
+  bool isSaved(String listingId) => state.contains(listingId);
 }
-
-final savedListingsProvider = StateNotifierProvider<SavedListingsNotifier, Set<String>>((ref) {
-  return SavedListingsNotifier();
-});

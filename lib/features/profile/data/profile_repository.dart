@@ -1,17 +1,20 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/exceptions/api_exception.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/network/api_constants.dart';
 import '../../../core/network/dio_client.dart';
 import '../../auth/data/auth_repository.dart';
 
-final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
+part 'profile_repository.g.dart';
+
+@riverpod
+ProfileRepository profileRepository(Ref ref) {
   return ProfileRepository(
     ref.watch(dioProvider),
     ref.watch(authRepositoryProvider),
   );
-});
+}
 
 class ProfileRepository {
   final Dio _dio;

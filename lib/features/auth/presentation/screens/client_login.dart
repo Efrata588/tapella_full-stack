@@ -31,13 +31,13 @@ class _ClientLoginScreenState extends ConsumerState<ClientLoginScreen> {
   }
 
   Future<void> _login() async {
-    final ok = await ref.read(authProvider.notifier).login(
+    final ok = await ref.read(authNotifierProvider.notifier).login(
           email: _email.text.trim(),
           password: _password.text,
           isProvider: false,
         );
     if (!ok && mounted) {
-      final err = ref.read(authProvider).error;
+      final err = ref.read(authNotifierProvider).error;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(err ?? 'Login failed')),
       );
@@ -46,7 +46,7 @@ class _ClientLoginScreenState extends ConsumerState<ClientLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authProvider);
+    final auth = ref.watch(authNotifierProvider);
 
     return AppScaffold(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),

@@ -1,13 +1,15 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
-  return ConnectivityService();
-});
+part 'connectivity_service.g.dart';
 
-final isOnlineProvider = StreamProvider<bool>((ref) {
+@riverpod
+ConnectivityService connectivityService(Ref ref) => ConnectivityService();
+
+@riverpod
+Stream<bool> isOnline(Ref ref) {
   return ref.watch(connectivityServiceProvider).onlineStream;
-});
+}
 
 class ConnectivityService {
   final _connectivity = Connectivity();

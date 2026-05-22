@@ -31,21 +31,21 @@ class _BusinessLoginScreenState extends ConsumerState<BusinessLoginScreen> {
   }
 
   Future<void> _login() async {
-    final ok = await ref.read(authProvider.notifier).login(
+    final ok = await ref.read(authNotifierProvider.notifier).login(
           email: _email.text.trim(),
           password: _password.text,
           isProvider: true,
         );
     if (!ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(ref.read(authProvider).error ?? 'Login failed')),
+        SnackBar(content: Text(ref.read(authNotifierProvider).error ?? 'Login failed')),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authProvider);
+    final auth = ref.watch(authNotifierProvider);
 
     return AppScaffold(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),

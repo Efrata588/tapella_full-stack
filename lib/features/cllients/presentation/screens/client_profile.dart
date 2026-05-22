@@ -25,12 +25,12 @@ class _ClientProfileState extends ConsumerState<ClientProfile> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(authProvider.notifier).refreshProfile());
+    Future.microtask(() => ref.read(authNotifierProvider.notifier).refreshProfile());
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authProvider).user;
+    final user = ref.watch(authNotifierProvider).user;
 
     return AppScaffold(
       extendBody: true,

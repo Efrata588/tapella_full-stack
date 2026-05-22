@@ -28,8 +28,8 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final listingsState = ref.watch(listingsProvider);
-    final savedListings = ref.watch(savedListingsProvider);
+    final listingsState = ref.watch(listingsNotifierProvider);
+    final savedListings = ref.watch(savedListingsNotifierProvider);
 
     return AppScaffold(
       extendBody: true,
@@ -50,7 +50,7 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
             TextField(
               controller: searchController,
               style: const TextStyle(color: Colors.white),
-              onSubmitted: (_) => ref.read(listingsProvider.notifier).load(
+              onSubmitted: (_) => ref.read(listingsNotifierProvider.notifier).load(
                     search: searchController.text,
                   ),
               decoration: InputDecoration(
@@ -62,7 +62,7 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
                 hintStyle: const TextStyle(color: Colors.grey),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search, color: Colors.grey),
-                  onPressed: () => ref.read(listingsProvider.notifier).load(
+                  onPressed: () => ref.read(listingsNotifierProvider.notifier).load(
                         search: searchController.text,
                       ),
                 ),
@@ -88,11 +88,11 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
               child: Row(
                 children: [
                   _buildCategoryChip('ALL', onTap: () {
-                    ref.read(listingsProvider.notifier).load();
+                    ref.read(listingsNotifierProvider.notifier).load();
                   }),
                   ...appCategories.map((category) {
                     return _buildCategoryChip(category, onTap: () {
-                      ref.read(listingsProvider.notifier).load(category: category);
+                      ref.read(listingsNotifierProvider.notifier).load(category: category);
                     });
                   }),
                 ],
@@ -134,7 +134,7 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
                   isSaved: isSaved,
                   onCardTap: () => context.go('/service/detail/${listing.id}'),
                   onSaveToggle: () {
-                    ref.read(savedListingsProvider.notifier).toggleSave(listing.id);
+                    ref.read(savedListingsNotifierProvider.notifier).toggleSave(listing.id);
                   },
                   onBookNow: () => context.go('/service/book/${listing.id}'),
                 );

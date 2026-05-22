@@ -1,14 +1,16 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/models/review_model.dart';
 import '../../data/reviews_repository.dart';
 
-final listingReviewsProvider =
-    FutureProvider.family<List<ReviewModel>, String>((ref, listingId) {
-  return ref.read(reviewsRepositoryProvider).getByListing(listingId);
-});
+part 'reviews_provider.g.dart';
 
-final submitReviewProvider =
-    Provider<SubmitReviewActions>((ref) => SubmitReviewActions(ref));
+@riverpod
+Future<List<ReviewModel>> listingReviews(Ref ref, String listingId) {
+  return ref.read(reviewsRepositoryProvider).getByListing(listingId);
+}
+
+@riverpod
+SubmitReviewActions submitReview(Ref ref) => SubmitReviewActions(ref);
 
 class SubmitReviewActions {
   final Ref ref;

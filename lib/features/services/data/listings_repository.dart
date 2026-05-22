@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../core/cache/cache_invalidator.dart';
 import '../../../core/connectivity/connectivity_service.dart';
@@ -10,13 +10,16 @@ import '../../../core/models/listing_model.dart';
 import '../../../core/network/api_constants.dart';
 import '../../../core/network/dio_client.dart';
 
-final listingsRepositoryProvider = Provider<ListingsRepository>((ref) {
+part 'listings_repository.g.dart';
+
+@riverpod
+ListingsRepository listingsRepository(Ref ref) {
   return ListingsRepository(
     ref.watch(dioProvider),
     ref.watch(cacheInvalidatorProvider),
     ref.watch(connectivityServiceProvider),
   );
-});
+}
 
 class ListingsRepository {
   final Dio _dio;

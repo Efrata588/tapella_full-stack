@@ -1,8 +1,11 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/exceptions/api_exception.dart';
 import '../../../../core/models/user_model.dart';
 import '../../data/auth_repository.dart';
 import '../../../profile/data/profile_repository.dart';
+
+// 1. Crucial part directive for Riverpod 3 code generation
+part 'auth_provider.g.dart';
 
 class AuthState {
   final UserModel? user;
@@ -36,11 +39,13 @@ class AuthState {
   }
 }
 
-final authProvider = NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
-
-class AuthNotifier extends Notifier<AuthState> {
+// 2. Annote your class with @riverpod.
+// The generator automatically creates the 'authNotifierProvider' variable for you.
+@riverpod
+class AuthNotifier extends _$AuthNotifier {
   @override
   AuthState build() {
+    // Keeps your synchronous instant startup state while triggering the background async restore
     Future.microtask(_restore);
     return const AuthState();
   }
@@ -64,11 +69,9 @@ class AuthNotifier extends Notifier<AuthState> {
   }) async {
     state = state.copyWith(isSubmitting: true, clearError: true);
     try {
-      final user = await ref.read(authRepositoryProvider).login(
-            email: email,
-            password: password,
-            isProvider: isProvider,
-          );
+      final user = await ref
+          .read(authRepositoryProvider)
+          .login(email: email, password: password, isProvider: isProvider);
       state = AuthState(user: user, initialized: true);
       return true;
     } catch (e) {
@@ -91,7 +94,9 @@ class AuthNotifier extends Notifier<AuthState> {
   }) async {
     state = state.copyWith(isSubmitting: true, clearError: true);
     try {
-      final user = await ref.read(authRepositoryProvider).register(
+      final user = await ref
+          .read(authRepositoryProvider)
+          .register(
             email: email,
             password: password,
             displayName: displayName,

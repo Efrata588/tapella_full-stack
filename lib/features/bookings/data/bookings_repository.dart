@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../core/cache/cache_invalidator.dart';
 import '../../../core/connectivity/connectivity_service.dart';
@@ -10,13 +10,16 @@ import '../../../core/models/booking_model.dart';
 import '../../../core/network/api_constants.dart';
 import '../../../core/network/dio_client.dart';
 
-final bookingsRepositoryProvider = Provider<BookingsRepository>((ref) {
+part 'bookings_repository.g.dart';
+
+@riverpod
+BookingsRepository bookingsRepository(Ref ref) {
   return BookingsRepository(
     ref.watch(dioProvider),
     ref.watch(cacheInvalidatorProvider),
     ref.watch(connectivityServiceProvider),
   );
-});
+}
 
 class BookingsRepository {
   final Dio _dio;

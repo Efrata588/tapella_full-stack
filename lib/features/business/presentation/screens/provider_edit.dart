@@ -36,7 +36,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
   @override
   void initState() {
     super.initState();
-    final user = ref.read(authProvider).user;
+    final user = ref.read(authNotifierProvider).user;
     _name = TextEditingController(text: user?.displayName ?? '');
     _email = TextEditingController(text: user?.email ?? '');
     _phone = TextEditingController(text: user?.phone ?? '');
@@ -67,7 +67,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
             _selectedProfession = appCategories.first;
           }
           setState(() => _profileImage = fresh.profileImage);
-          ref.read(authProvider.notifier).setUser(fresh);
+          ref.read(authNotifierProvider.notifier).setUser(fresh);
         }
       } catch (_) {}
     });
@@ -100,7 +100,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
             profileImage: _profileImage,
             profession: _selectedProfession,
           );
-      ref.read(authProvider.notifier).setUser(user);
+      ref.read(authNotifierProvider.notifier).setUser(user);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile updated')),
@@ -120,7 +120,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authProvider).user;
+    final user = ref.watch(authNotifierProvider).user;
 
     return AppScaffold(
       extendBody: true,

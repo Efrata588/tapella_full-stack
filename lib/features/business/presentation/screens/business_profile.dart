@@ -26,12 +26,15 @@ class _BusinessProfileState extends ConsumerState<BusinessProfile> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(authProvider.notifier).refreshProfile());
+    Future.microtask(
+      () => ref.read(authNotifierProvider.notifier).refreshProfile(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authProvider).user;
+    final user = ref.watch(authNotifierProvider).user;
+
     final myListings = ref.watch(myListingsProvider);
 
     return AppScaffold(
@@ -92,7 +95,10 @@ class _BusinessProfileState extends ConsumerState<BusinessProfile> {
               error: (e, _) => Text('$e'),
               data: (listings) {
                 if (listings.isEmpty) {
-                  return const Text('No listings yet', style: TextStyle(color: Colors.grey));
+                  return const Text(
+                    'No listings yet',
+                    style: TextStyle(color: Colors.grey),
+                  );
                 }
                 return Column(
                   children: listings.map((l) {
@@ -100,12 +106,18 @@ class _BusinessProfileState extends ConsumerState<BusinessProfile> {
                       padding: const EdgeInsets.only(bottom: 12),
                       child: GlassCard(
                         child: ListTile(
-                          title: Text(l.title, style: const TextStyle(color: Colors.white)),
+                          title: Text(
+                            l.title,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                           subtitle: Text(
                             '${l.category} • ★ ${l.ratingAvg.toStringAsFixed(1)}',
                             style: const TextStyle(color: Colors.grey),
                           ),
-                          trailing: const Icon(Icons.chevron_right, color: Colors.white54),
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: Colors.white54,
+                          ),
                           onTap: () => context.go('/service/detail/${l.id}'),
                         ),
                       ),
@@ -142,7 +154,8 @@ class _BusinessProfileState extends ConsumerState<BusinessProfile> {
               label: 'Delete Account',
               height: 56,
               width: 277,
-              onPressed: () => handleDeleteAccount(context, ref, isProvider: true),
+              onPressed: () =>
+                  handleDeleteAccount(context, ref, isProvider: true),
             ),
             const SizedBox(height: 100),
           ],

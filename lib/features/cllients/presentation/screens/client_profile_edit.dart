@@ -34,7 +34,7 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
   @override
   void initState() {
     super.initState();
-    final user = ref.read(authProvider).user;
+    final user = ref.read(authNotifierProvider).user;
     _name = TextEditingController(text: user?.displayName ?? '');
     _email = TextEditingController(text: user?.email ?? '');
     _phone = TextEditingController(text: user?.phone ?? '');
@@ -51,7 +51,7 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
           _location.text = fresh.location ?? '';
           _bio.text = fresh.bio ?? '';
           setState(() => _profileImage = fresh.profileImage);
-          ref.read(authProvider.notifier).setUser(fresh);
+          ref.read(authNotifierProvider.notifier).setUser(fresh);
         }
       } catch (_) {}
     });
@@ -83,7 +83,7 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
             bio: _bio.text.trim(),
             profileImage: _profileImage,
           );
-      ref.read(authProvider.notifier).setUser(user);
+      ref.read(authNotifierProvider.notifier).setUser(user);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile updated')),
@@ -103,7 +103,7 @@ class _ClientProfileEditState extends ConsumerState<ClientProfileEdit> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authProvider).user;
+    final user = ref.watch(authNotifierProvider).user;
 
     return AppScaffold(
       extendBody: true,
