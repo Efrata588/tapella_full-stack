@@ -34,13 +34,17 @@ class BookingsRepository {
     String? notes,
   }) async {
     try {
-      final res = await _dio.post(ApiConstants.bookings, data: {
-        'listingId': listingId,
-        if (scheduledDate != null) 'scheduledDate': scheduledDate,
-        if (notes != null) 'notes': notes,
-      });
-      final booking =
-          BookingModel.fromJson(res.data['data'] as Map<String, dynamic>);
+      final res = await _dio.post(
+        ApiConstants.bookings,
+        data: {
+          'listingId': listingId,
+          'scheduledDate': ?scheduledDate,
+          'notes': ?notes,
+        },
+      );
+      final booking = BookingModel.fromJson(
+        res.data['data'] as Map<String, dynamic>,
+      );
       if (isLocalDatabaseSupported) {
         await _invalidator.invalidateBookings();
       }
@@ -93,7 +97,9 @@ class BookingsRepository {
     }
   }
 
-  Future<CacheResult<List<BookingModel>>> _offlineFallback(DioException e) async {
+  Future<CacheResult<List<BookingModel>>> _offlineFallback(
+    DioException e,
+  ) async {
     if (!isLocalDatabaseSupported) {
       throw ApiExceptionMapper.fromDio(e);
     }
@@ -132,8 +138,9 @@ class BookingsRepository {
         '${ApiConstants.bookings}/$id/status',
         data: {'status': status},
       );
-      final booking =
-          BookingModel.fromJson(res.data['data'] as Map<String, dynamic>);
+      final booking = BookingModel.fromJson(
+        res.data['data'] as Map<String, dynamic>,
+      );
       if (isLocalDatabaseSupported) {
         await _invalidator.invalidateBookings();
       }
@@ -146,8 +153,9 @@ class BookingsRepository {
   Future<BookingModel> complete(String id) async {
     try {
       final res = await _dio.patch('${ApiConstants.bookings}/$id/complete');
-      final booking =
-          BookingModel.fromJson(res.data['data'] as Map<String, dynamic>);
+      final booking = BookingModel.fromJson(
+        res.data['data'] as Map<String, dynamic>,
+      );
       if (isLocalDatabaseSupported) {
         await _invalidator.invalidateBookings();
       }
@@ -160,8 +168,9 @@ class BookingsRepository {
   Future<BookingModel> cancel(String id) async {
     try {
       final res = await _dio.patch('${ApiConstants.bookings}/$id/cancel');
-      final booking =
-          BookingModel.fromJson(res.data['data'] as Map<String, dynamic>);
+      final booking = BookingModel.fromJson(
+        res.data['data'] as Map<String, dynamic>,
+      );
       if (isLocalDatabaseSupported) {
         await _invalidator.invalidateBookings();
       }

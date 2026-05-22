@@ -25,12 +25,12 @@ class _ClientProfileState extends ConsumerState<ClientProfile> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.read(authNotifierProvider.notifier).refreshProfile());
+    Future.microtask(() => ref.read(authProvider.notifier).refreshProfile());
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authNotifierProvider).user;
+    final user = ref.watch(authProvider).user;
 
     return AppScaffold(
       extendBody: true,
@@ -73,7 +73,12 @@ class _ClientProfileState extends ConsumerState<ClientProfile> {
             Text(user?.roleLabel ?? 'MEMBER', style: AppTextStyles.profileType),
             if (user?.email != null) ...[
               const SizedBox(height: 8),
-              Text(user!.email, style: AppTextStyles.bodySm.copyWith(color: AppColors.textMuted)),
+              Text(
+                user!.email,
+                style: AppTextStyles.bodySm.copyWith(
+                  color: AppColors.textMuted,
+                ),
+              ),
             ],
             const SizedBox(height: AppSpacing.xl),
             _ProfileMenuCard(
@@ -109,7 +114,8 @@ class _ClientProfileState extends ConsumerState<ClientProfile> {
               label: 'Delete Account',
               height: 56,
               width: 277,
-              onPressed: () => handleDeleteAccount(context, ref, isProvider: false),
+              onPressed: () =>
+                  handleDeleteAccount(context, ref, isProvider: false),
             ),
             const SizedBox(height: 100),
           ],

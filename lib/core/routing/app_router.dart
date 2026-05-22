@@ -14,11 +14,9 @@ part 'app_router.g.dart';
 GoRouter router(Ref ref) {
   // Only rebuild router when auth identity changes — not during submit loading.
   ref.watch(
-    authNotifierProvider.select(
-      (s) => (s.initialized, s.user?.id, s.user?.role),
-    ),
+    authProvider.select((s) => (s.initialized, s.user?.id, s.user?.role)),
   );
-  final auth = ref.read(authNotifierProvider);
+  final auth = ref.read(authProvider);
 
   return GoRouter(
     initialLocation: '/client/login',
@@ -26,7 +24,8 @@ GoRouter router(Ref ref) {
       if (!auth.initialized) return null;
 
       final path = state.matchedLocation;
-      final isAuthRoute = path.contains('/login') ||
+      final isAuthRoute =
+          path.contains('/login') ||
           path.contains('/signup') ||
           path.contains('/forgot-password');
 
@@ -115,9 +114,8 @@ GoRouter router(Ref ref) {
       ),
       GoRoute(
         path: '/service/detail/:id',
-        builder: (context, state) => ServiceDetail(
-          listingId: state.pathParameters['id']!,
-        ),
+        builder: (context, state) =>
+            ServiceDetail(listingId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: '/service/detail/alt-1',

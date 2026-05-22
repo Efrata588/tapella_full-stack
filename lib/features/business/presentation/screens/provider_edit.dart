@@ -36,7 +36,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
   @override
   void initState() {
     super.initState();
-    final user = ref.read(authNotifierProvider).user;
+    final user = ref.read(authProvider).user;
     _name = TextEditingController(text: user?.displayName ?? '');
     _email = TextEditingController(text: user?.email ?? '');
     _phone = TextEditingController(text: user?.phone ?? '');
@@ -67,7 +67,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
             _selectedProfession = appCategories.first;
           }
           setState(() => _profileImage = fresh.profileImage);
-          ref.read(authNotifierProvider.notifier).setUser(fresh);
+          ref.read(authProvider.notifier).setUser(fresh);
         }
       } catch (_) {}
     });
@@ -91,7 +91,9 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
   Future<void> _save() async {
     setState(() => _saving = true);
     try {
-      final user = await ref.read(profileRepositoryProvider).updateProfile(
+      final user = await ref
+          .read(profileRepositoryProvider)
+          .updateProfile(
             displayName: _name.text.trim(),
             email: _email.text.trim(),
             phone: _phone.text.trim(),
@@ -100,18 +102,18 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
             profileImage: _profileImage,
             profession: _selectedProfession,
           );
-      ref.read(authNotifierProvider.notifier).setUser(user);
+      ref.read(authProvider.notifier).setUser(user);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Profile updated')));
         context.go('/business/profile');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -120,7 +122,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authNotifierProvider).user;
+    final user = ref.watch(authProvider).user;
 
     return AppScaffold(
       extendBody: true,
@@ -158,11 +160,18 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
               onTap: _pickImage,
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text(user?.displayName ?? 'Profile', style: AppTextStyles.profileName),
+            Text(
+              user?.displayName ?? 'Profile',
+              style: AppTextStyles.profileName,
+            ),
             const SizedBox(height: 4),
             Text('SERVICE PROVIDER', style: AppTextStyles.profileType),
             const SizedBox(height: AppSpacing.xl),
-            AppTextField(controller: _name, label: 'BUSINESS NAME', hintText: 'Your business name'),
+            AppTextField(
+              controller: _name,
+              label: 'BUSINESS NAME',
+              hintText: 'Your business name',
+            ),
             const SizedBox(height: AppSpacing.lg),
             AppTextField(
               controller: _email,
@@ -179,12 +188,16 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
             DropdownButtonFormField<String>(
-              value: _selectedProfession,
+              initialValue: _selectedProfession,
               dropdownColor: const Color(0xFF151E3D),
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'PROFESSION',
-                labelStyle: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold),
+                labelStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
                 prefixIcon: const Icon(Icons.work_outline, color: Colors.grey),
                 filled: true,
                 fillColor: const Color(0xFF151E3D),
@@ -194,10 +207,7 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
                 ),
               ),
               items: appCategories.map((cat) {
-                return DropdownMenuItem<String>(
-                  value: cat,
-                  child: Text(cat),
-                );
+                return DropdownMenuItem<String>(value: cat, child: Text(cat));
               }).toList(),
               onChanged: (val) {
                 setState(() {
@@ -206,9 +216,17 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
               },
             ),
             const SizedBox(height: AppSpacing.lg),
-            AppTextField(controller: _location, label: 'LOCATION', hintText: 'Addis Ababa'),
+            AppTextField(
+              controller: _location,
+              label: 'LOCATION',
+              hintText: 'Addis Ababa',
+            ),
             const SizedBox(height: AppSpacing.lg),
-            AppTextField(controller: _bio, label: 'BIO', hintText: 'Describe your services'),
+            AppTextField(
+              controller: _bio,
+              label: 'BIO',
+              hintText: 'Describe your services',
+            ),
             const SizedBox(height: AppSpacing.xxl),
             PrimaryButton(
               label: _saving ? 'Saving...' : 'Save Changes',
@@ -223,7 +241,8 @@ class _ProviderEditScreenState extends ConsumerState<ProviderEditScreen> {
               label: 'Delete Account',
               height: 56,
               width: 277,
-              onPressed: () => handleDeleteAccount(context, ref, isProvider: true),
+              onPressed: () =>
+                  handleDeleteAccount(context, ref, isProvider: true),
             ),
             const SizedBox(height: 100),
           ],

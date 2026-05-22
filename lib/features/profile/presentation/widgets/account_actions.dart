@@ -9,7 +9,7 @@ Future<void> handleLogout(
   WidgetRef ref, {
   required bool isProvider,
 }) async {
-  await ref.read(authNotifierProvider.notifier).logout();
+  await ref.read(authProvider.notifier).logout();
   if (context.mounted) {
     context.go(isProvider ? '/business/login' : '/client/login');
   }
@@ -30,7 +30,7 @@ Future<void> handleDeleteAccount(
   );
   if (!confirmed || !context.mounted) return;
 
-  final ok = await ref.read(authNotifierProvider.notifier).deleteAccount();
+  final ok = await ref.read(authProvider.notifier).deleteAccount();
   if (!context.mounted) return;
 
   if (ok) {
@@ -41,7 +41,9 @@ Future<void> handleDeleteAccount(
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(ref.read(authNotifierProvider).error ?? 'Could not delete account'),
+        content: Text(
+          ref.read(authProvider).error ?? 'Could not delete account',
+        ),
       ),
     );
   }

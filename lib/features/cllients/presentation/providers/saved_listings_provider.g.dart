@@ -9,12 +9,12 @@ part of 'saved_listings_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(SavedListingsNotifier)
-const savedListingsProvider = SavedListingsNotifierProvider._();
+@ProviderFor(SavedListings)
+const savedListingsProvider = SavedListingsProvider._();
 
-final class SavedListingsNotifierProvider
-    extends $NotifierProvider<SavedListingsNotifier, Set<String>> {
-  const SavedListingsNotifierProvider._()
+final class SavedListingsProvider
+    extends $NotifierProvider<SavedListings, Set<String>> {
+  const SavedListingsProvider._()
     : super(
         from: null,
         argument: null,
@@ -26,11 +26,11 @@ final class SavedListingsNotifierProvider
       );
 
   @override
-  String debugGetCreateSourceHash() => _$savedListingsNotifierHash();
+  String debugGetCreateSourceHash() => _$savedListingsHash();
 
   @$internal
   @override
-  SavedListingsNotifier create() => SavedListingsNotifier();
+  SavedListings create() => SavedListings();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(Set<String> value) {
@@ -41,10 +41,9 @@ final class SavedListingsNotifierProvider
   }
 }
 
-String _$savedListingsNotifierHash() =>
-    r'2f216397c3563eef51d311fd84e620dfcf346f22';
+String _$savedListingsHash() => r'666d8b734c46bdbfb909d300c84a6598bb1a9b19';
 
-abstract class _$SavedListingsNotifier extends $Notifier<Set<String>> {
+abstract class _$SavedListings extends $Notifier<Set<String>> {
   Set<String> build();
   @$mustCallSuper
   @override

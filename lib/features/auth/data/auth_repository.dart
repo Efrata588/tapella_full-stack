@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -11,8 +10,9 @@ import '../../../core/network/dio_client.dart';
 
 part 'auth_repository.g.dart';
 
+// Use standard camelCase for the function name so it generates cleanly
 @riverpod
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   return AuthRepository(
     ref.watch(dioProvider),
     ref.watch(secureStorageProvider),
@@ -45,8 +45,8 @@ class AuthRepository {
           'email': email,
           'password': password,
           'displayName': displayName,
-          if (phone != null) 'phone': phone,
-          if (profession != null) 'profession': profession,
+          'phone': phone,
+          'profession': profession,
         },
       );
       return _persistSession(res.data['data'] as Map<String, dynamic>);

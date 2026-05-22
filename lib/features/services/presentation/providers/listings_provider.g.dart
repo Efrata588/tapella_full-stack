@@ -9,12 +9,12 @@ part of 'listings_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(ListingsNotifier)
-const listingsProvider = ListingsNotifierProvider._();
+@ProviderFor(Listings)
+const listingsProvider = ListingsProvider._();
 
-final class ListingsNotifierProvider
-    extends $NotifierProvider<ListingsNotifier, ListingsState> {
-  const ListingsNotifierProvider._()
+final class ListingsProvider
+    extends $NotifierProvider<Listings, ListingsState> {
+  const ListingsProvider._()
     : super(
         from: null,
         argument: null,
@@ -26,11 +26,11 @@ final class ListingsNotifierProvider
       );
 
   @override
-  String debugGetCreateSourceHash() => _$listingsNotifierHash();
+  String debugGetCreateSourceHash() => _$listingsHash();
 
   @$internal
   @override
-  ListingsNotifier create() => ListingsNotifier();
+  Listings create() => Listings();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(ListingsState value) {
@@ -41,9 +41,9 @@ final class ListingsNotifierProvider
   }
 }
 
-String _$listingsNotifierHash() => r'de32af701affd09dd0f5cdbaa7bda062df8b1749';
+String _$listingsHash() => r'd15d5534c16abc42362b1fa7f444bdbe91fba2b7';
 
-abstract class _$ListingsNotifier extends $Notifier<ListingsState> {
+abstract class _$Listings extends $Notifier<ListingsState> {
   ListingsState build();
   @$mustCallSuper
   @override
@@ -181,12 +181,12 @@ final class MyListingsProvider
 
 String _$myListingsHash() => r'cb1b3179e684f15693a99ef4066cc498ba12e9c7';
 
-@ProviderFor(CreateListingNotifier)
-const createListingProvider = CreateListingNotifierProvider._();
+@ProviderFor(CreateListing)
+const createListingProvider = CreateListingProvider._();
 
-final class CreateListingNotifierProvider
-    extends $AsyncNotifierProvider<CreateListingNotifier, void> {
-  const CreateListingNotifierProvider._()
+final class CreateListingProvider
+    extends $AsyncNotifierProvider<CreateListing, void> {
+  const CreateListingProvider._()
     : super(
         from: null,
         argument: null,
@@ -198,17 +198,16 @@ final class CreateListingNotifierProvider
       );
 
   @override
-  String debugGetCreateSourceHash() => _$createListingNotifierHash();
+  String debugGetCreateSourceHash() => _$createListingHash();
 
   @$internal
   @override
-  CreateListingNotifier create() => CreateListingNotifier();
+  CreateListing create() => CreateListing();
 }
 
-String _$createListingNotifierHash() =>
-    r'adeb1d73fc4d45c4a26f8dc89f8fd9e7b2772426';
+String _$createListingHash() => r'6cc7ec48de93cce7bc9df661f92e992b94c8fdc6';
 
-abstract class _$CreateListingNotifier extends $AsyncNotifier<void> {
+abstract class _$CreateListing extends $AsyncNotifier<void> {
   FutureOr<void> build();
   @$mustCallSuper
   @override

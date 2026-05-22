@@ -9,12 +9,11 @@ part of 'auth_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(AuthNotifier)
-const authProvider = AuthNotifierProvider._();
+@ProviderFor(Auth)
+const authProvider = AuthProvider._();
 
-final class AuthNotifierProvider
-    extends $NotifierProvider<AuthNotifier, AuthState> {
-  const AuthNotifierProvider._()
+final class AuthProvider extends $NotifierProvider<Auth, AuthState> {
+  const AuthProvider._()
     : super(
         from: null,
         argument: null,
@@ -26,11 +25,11 @@ final class AuthNotifierProvider
       );
 
   @override
-  String debugGetCreateSourceHash() => _$authNotifierHash();
+  String debugGetCreateSourceHash() => _$authHash();
 
   @$internal
   @override
-  AuthNotifier create() => AuthNotifier();
+  Auth create() => Auth();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(AuthState value) {
@@ -41,9 +40,9 @@ final class AuthNotifierProvider
   }
 }
 
-String _$authNotifierHash() => r'5162239631ea767b94fc747d1c4083a7423b59ee';
+String _$authHash() => r'f254f0e4b2b2c20787d0a90fbbc9f4f85ea1d8db';
 
-abstract class _$AuthNotifier extends $Notifier<AuthState> {
+abstract class _$Auth extends $Notifier<AuthState> {
   AuthState build();
   @$mustCallSuper
   @override

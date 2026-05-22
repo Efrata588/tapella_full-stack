@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'saved_listings_provider.g.dart';
 
 @riverpod
-class SavedListingsNotifier extends _$SavedListingsNotifier {
+class SavedListings extends _$SavedListings {
   @override
   Set<String> build() => {};
 

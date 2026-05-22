@@ -48,11 +48,11 @@ class ProfileRepository {
         data: {
           'displayName': displayName,
           'email': email,
-          if (phone != null) 'phone': phone,
-          if (location != null) 'location': location,
-          if (bio != null) 'bio': bio,
-          if (profileImage != null) 'profileImage': profileImage,
-          if (profession != null) 'profession': profession,
+          'phone': ?phone,
+          'location': ?location,
+          'bio': ?bio,
+          'profileImage': ?profileImage,
+          'profession': ?profession,
         },
       );
       final user = UserModel.fromJson(res.data['data'] as Map<String, dynamic>);

@@ -28,8 +28,8 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final listingsState = ref.watch(listingsNotifierProvider);
-    final savedListings = ref.watch(savedListingsNotifierProvider);
+    final listingsState = ref.watch(listingsProvider);
+    final savedListings = ref.watch(savedListingsProvider);
 
     return AppScaffold(
       extendBody: true,
@@ -50,9 +50,9 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
             TextField(
               controller: searchController,
               style: const TextStyle(color: Colors.white),
-              onSubmitted: (_) => ref.read(listingsNotifierProvider.notifier).load(
-                    search: searchController.text,
-                  ),
+              onSubmitted: (_) => ref
+                  .read(listingsProvider.notifier)
+                  .load(search: searchController.text),
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -62,9 +62,9 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
                 hintStyle: const TextStyle(color: Colors.grey),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search, color: Colors.grey),
-                  onPressed: () => ref.read(listingsNotifierProvider.notifier).load(
-                        search: searchController.text,
-                      ),
+                  onPressed: () => ref
+                      .read(listingsProvider.notifier)
+                      .load(search: searchController.text),
                 ),
                 filled: true,
                 fillColor: const Color.fromARGB(255, 23, 47, 83),
@@ -87,13 +87,21 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _buildCategoryChip('ALL', onTap: () {
-                    ref.read(listingsNotifierProvider.notifier).load();
-                  }),
+                  _buildCategoryChip(
+                    'ALL',
+                    onTap: () {
+                      ref.read(listingsProvider.notifier).load();
+                    },
+                  ),
                   ...appCategories.map((category) {
-                    return _buildCategoryChip(category, onTap: () {
-                      ref.read(listingsNotifierProvider.notifier).load(category: category);
-                    });
+                    return _buildCategoryChip(
+                      category,
+                      onTap: () {
+                        ref
+                            .read(listingsProvider.notifier)
+                            .load(category: category);
+                      },
+                    );
                   }),
                 ],
               ),
@@ -121,7 +129,10 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
                 style: const TextStyle(color: Colors.redAccent),
               )
             else if (listingsState.listings.isEmpty)
-              const Text('No listings yet', style: TextStyle(color: Colors.grey))
+              const Text(
+                'No listings yet',
+                style: TextStyle(color: Colors.grey),
+              )
             else
               ...listingsState.listings.map((listing) {
                 final isSaved = savedListings.contains(listing.id);
@@ -134,7 +145,9 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
                   isSaved: isSaved,
                   onCardTap: () => context.go('/service/detail/${listing.id}'),
                   onSaveToggle: () {
-                    ref.read(savedListingsNotifierProvider.notifier).toggleSave(listing.id);
+                    ref
+                        .read(savedListingsProvider.notifier)
+                        .toggleSave(listing.id);
                   },
                   onBookNow: () => context.go('/service/book/${listing.id}'),
                 );

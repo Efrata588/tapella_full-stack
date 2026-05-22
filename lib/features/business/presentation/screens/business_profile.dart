@@ -26,14 +26,12 @@ class _BusinessProfileState extends ConsumerState<BusinessProfile> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => ref.read(authNotifierProvider.notifier).refreshProfile(),
-    );
+    Future.microtask(() => ref.read(authProvider.notifier).refreshProfile());
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authNotifierProvider).user;
+    final user = ref.watch(authProvider).user;
 
     final myListings = ref.watch(myListingsProvider);
 

@@ -21,14 +21,15 @@ class BusinessHome extends ConsumerStatefulWidget {
 }
 
 class _BusinessHomeState extends ConsumerState<BusinessHome> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
   String selectedTab = 'All';
 
   Future<void> _completeJob(String bookingId) async {
     final confirmed = await showConfirmDialog(
       context,
       title: 'Finish Job',
-      message: 'Are you sure you want to finish this job and mark it as completed?',
+      message:
+          'Are you sure you want to finish this job and mark it as completed?',
       confirmLabel: 'Finish Job',
     );
     if (!confirmed) return;
@@ -42,9 +43,9 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error completing job: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error completing job: $e')));
       }
     }
   }
@@ -53,7 +54,8 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
     final confirmed = await showConfirmDialog(
       context,
       title: 'Delete/Reject Job',
-      message: 'Are you sure you want to reject this job? This will cancel the booking on the client side.',
+      message:
+          'Are you sure you want to reject this job? This will cancel the booking on the client side.',
       confirmLabel: 'Delete Job',
       isDestructive: true,
     );
@@ -68,9 +70,9 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error rejecting job: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error rejecting job: $e')));
       }
     }
   }
@@ -93,7 +95,11 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
             padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
             child: IconButton(
               onPressed: () => context.go("/business/profile"),
-              icon: const Icon(Icons.account_circle, color: Colors.white, size: 30),
+              icon: const Icon(
+                Icons.account_circle,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
           ),
         ],
@@ -148,7 +154,10 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
                 ),
               ),
               error: (err, _) => Center(
-                child: Text('Error: $err', style: const TextStyle(color: Colors.redAccent)),
+                child: Text(
+                  'Error: $err',
+                  style: const TextStyle(color: Colors.redAccent),
+                ),
               ),
               data: (bookings) {
                 final filtered = bookings.where((b) {
@@ -166,7 +175,10 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
-                      child: Text('No bookings found in this category', style: TextStyle(color: Colors.grey)),
+                      child: Text(
+                        'No bookings found in this category',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     ),
                   );
                 }
@@ -175,19 +187,25 @@ class _BusinessHomeState extends ConsumerState<BusinessHome> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: filtered.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 16),
+                  separatorBuilder: (_, _) => const SizedBox(height: 16),
                   itemBuilder: (context, index) {
                     final b = filtered[index];
                     return BusinessReqCard(
                       name: b.customerName,
                       status: b.status,
                       proffession: b.listingTitle,
-                      dateTime: DateTime.tryParse(b.scheduledDate ?? '') ?? DateTime.now(),
+                      dateTime:
+                          DateTime.tryParse(b.scheduledDate ?? '') ??
+                          DateTime.now(),
                       location: 'Addis Ababa',
                       category: 'Service',
                       money: b.amountEtb.toDouble(),
-                      onComplete: b.status == 'accepted' ? () => _completeJob(b.id) : null,
-                      onDelete: b.status == 'accepted' ? () => _deleteJob(b.id) : null,
+                      onComplete: b.status == 'accepted'
+                          ? () => _completeJob(b.id)
+                          : null,
+                      onDelete: b.status == 'accepted'
+                          ? () => _deleteJob(b.id)
+                          : null,
                     );
                   },
                 );

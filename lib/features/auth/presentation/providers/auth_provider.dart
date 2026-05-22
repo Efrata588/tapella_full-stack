@@ -39,10 +39,10 @@ class AuthState {
   }
 }
 
-// 2. Annote your class with @riverpod.
-// The generator automatically creates the 'authNotifierProvider' variable for you.
+// 2. Annotate your class with @riverpod.
+// The generator automatically creates the 'authProvider' variable for you.
 @riverpod
-class AuthNotifier extends _$AuthNotifier {
+class Auth extends _$Auth {
   @override
   AuthState build() {
     // Keeps your synchronous instant startup state while triggering the background async restore

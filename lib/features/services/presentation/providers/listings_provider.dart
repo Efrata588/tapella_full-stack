@@ -20,7 +20,7 @@ class ListingsState {
 }
 
 @riverpod
-class ListingsNotifier extends _$ListingsNotifier {
+class Listings extends _$Listings {
   @override
   ListingsState build() {
     load();
@@ -33,10 +33,7 @@ class ListingsNotifier extends _$ListingsNotifier {
       final result = await ref
           .read(listingsRepositoryProvider)
           .getListings(search: search, category: category);
-      state = ListingsState(
-        listings: result.data,
-        isStale: result.isStale,
-      );
+      state = ListingsState(listings: result.data, isStale: result.isStale);
     } catch (e) {
       state = ListingsState(error: e.toString());
     }
@@ -54,7 +51,7 @@ Future<List<ListingModel>> myListings(Ref ref) {
 }
 
 @riverpod
-class CreateListingNotifier extends _$CreateListingNotifier {
+class CreateListing extends _$CreateListing {
   @override
   Future<void> build() async {}
 
@@ -62,7 +59,7 @@ class CreateListingNotifier extends _$CreateListingNotifier {
     state = const AsyncLoading();
     try {
       final item = await ref.read(listingsRepositoryProvider).create(body);
-      ref.invalidate(listingsNotifierProvider);
+      ref.invalidate(listingsProvider);
       state = const AsyncData(null);
       return item;
     } catch (e, st) {
